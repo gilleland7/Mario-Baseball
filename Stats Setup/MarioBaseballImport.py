@@ -2,6 +2,7 @@ import sqlite3
 import csv
 import sys
 import os
+import datetime
 
 # Get current and then parent directories
 current_path = os.path.dirname(os.path.realpath(__file__))
@@ -12,11 +13,19 @@ sys.path.append(parent_path)
 
 import Character
 
+version = 1.0
 class Import():
     def __init__(self):
+        self.stadiums = ["Bowser Castle","Bowser Jr. Playroom", "Daisy Cruiser", "DK Jungle", "Luigi's Mansion", "Mario Stadium", "Peach Ice Garden", "Wario City", "Yoshi Park"]
+        self.divisions = ["Mushroom", "Flower"]
         self.ignore_first_row = True
         characters = self.read_csv()
+
         self.cursor, self.connection = self.connect()
+        self.add_characters_to_database(characters)
+        self.add_stadiums()
+        self.add_division()
+        self.add_franchise_meta_data()
 
     def connect(self):
         connection = sqlite3.connect('../mario.db')
@@ -26,7 +35,72 @@ class Import():
     def close(self, connection):
         # Save the changes
         connection.commit()
-        connection.close()    
+        connection.close()   
+
+    def add_characters_to_database(self, characters):
+        id = 1
+
+        # characters must be added first to set up their IDs for use as foreign keys
+        for character in characters:
+            self.add__character_stats_to_database(character, id)
+            id += 1
+        
+        # Chemistry has to be done after character stats so character IDs are established for foreign keys
+        for character in characters:
+            self.add_character_chemistry(character)
+
+    
+    def add_character_chemistry(self, character):
+        # good chemistry
+        
+        for name in character.good_chemistry: # good chemistry is 1
+            self.cursor.execute('SELECT id FROM Chemistry WHERE (characterOne = ? AND characterTwo = ?) OR (characterOne = ? AND characterTwo = ?);',(character.name, name, name, character.name))
+            results = self.cursor.fetchall()
+
+            if (len(results) == 0): # Make sure relationship isn't already in database
+                self.cursor.execute('INSERT INTO Chemistry(characterOne, characterTwo, type) VALUES (?,?,1);',(character.name, name))
+        
+        for name in character.bad_chemistry: # good chemistry is 0
+            self.cursor.execute('SELECT id FROM Chemistry WHERE (characterOne = ? AND characterTwo = ?) OR (characterOne = ? AND characterTwo = ?);',(character.name, name, name, character.name))
+            results = self.cursor.fetchall()
+
+            if (len(results) == 0): # Make sure relationship isn't already in database
+                self.cursor.execute('INSERT INTO Chemistry(characterOne, characterTwo, type) VALUES (?,?,0);',(character.name, name))
+        
+        self.connection.commit()
+
+    def add__character_stats_to_database(self, character, id):
+        # set up game stats
+        self.cursor.execute('INSERT INTO BatterStats(id, BA, ops, obs) VALUES (?,0,0,0);',(id,))
+        self.cursor.execute('INSERT INTO DefensiveStats(id) VALUES (?);',(id,))
+        self.cursor.execute('INSERT INTO PitchingStats(id) VALUES (?);',(id,))
+        
+        # Player stats
+        self.cursor.execute('INSERT INTO PlayerStats(id, battingStats, defensiveStats, pitchingStats) VALUES (?,?,?,?);',(id,id,id,id))
+
+        # Character stats
+        self.cursor.execute('INSERT INTO Character(name, type, isCaptain, bat, pitch, field, run, weightedOverall, png, stats) VALUES (?,?,?,?,?,?,?,?,?,?);',(character.name, character.type, character.is_captain, character.hit, character.pitch, character.field, character.run, character.overall, character.png, id))
+
+        self.connection.commit()
+    
+    def add_stadiums(self):
+        for stadium in self.stadiums:
+            self.cursor.execute('INSERT INTO Stadium VALUES (?)', (stadium,))
+        self.connection.commit()
+
+    def add_division(self):
+        for div in self.divisions:
+            self.cursor.execute('INSERT INTO Division VALUES (?)', (div,))
+        self.connection.commit()
+
+    def add_franchise_meta_data(self):
+        today = datetime.date.today()
+        year = today.year   
+
+        state = 0 # 0=preseason, 1=inseason, 2=playoffs  
+
+        self.cursor.execute('INSERT INTO Franchise (state, version, year) VALUES (?,?,?)', (state, version, year))
+        self.connection.commit() 
 
     # Sample query: cursor.execute('SELECT * FROM Team ORDER BY Conference'):
     def read_csv(self):
@@ -84,4 +158,27 @@ class Import():
 
         return chemistry
 
+# Run this at start of every script so database updates are clean
+def clear_database():
+        connection = sqlite3.connect('../mario.db')
+        cursor = connection.cursor()
+
+        cursor.execute('DELETE FROM BatterStats;')
+        cursor.execute('DELETE FROM DefensiveStats;')
+        cursor.execute('DELETE FROM PitchingStats;')
+        cursor.execute('DELETE FROM PlayerStats;')
+
+        cursor.execute('DELETE FROM Character;')
+        cursor.execute('DELETE FROM Chemistry;')
+
+        cursor.execute('DELETE FROM Stadium;')
+        cursor.execute('DELETE FROM Division;')
+
+        cursor.execute('DELETE FROM Franchise;')
+
+        connection.commit()
+
+        connection.close()
+
+clear_database()
 Import()

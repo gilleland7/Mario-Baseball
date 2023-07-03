@@ -8,8 +8,8 @@ class Character():
         self.name = ""
         self.type = ""
         self.is_captain = 0
-        self.good_chemistry = []
-        self.bad_chemistry = []
+        self.good_chemistry = [] # Good chemistry = 1
+        self.bad_chemistry = [] # bad chemistry = 0
         self.png = ""
         
     def setup(self, p, h, f, r, o, n, t, ic, gc, bc):
