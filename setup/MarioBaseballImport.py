@@ -5,13 +5,9 @@ import os
 import datetime
 
 # Get current and then parent directories
-current_path = os.path.dirname(os.path.realpath(__file__))
-parent_path = os.path.dirname(current_path)
- 
-# Append parent directory to path
-sys.path.append(parent_path)
 
-import Character
+sys.path.append(".")
+from src import Character
 
 version = 1.0
 class Import():
@@ -28,7 +24,7 @@ class Import():
         self.add_franchise_meta_data()
 
     def connect(self):
-        connection = sqlite3.connect('../mario.db')
+        connection = sqlite3.connect('./mario.db')
         cursor = connection.cursor()
         return cursor, connection
 
@@ -104,7 +100,7 @@ class Import():
 
     # Sample query: cursor.execute('SELECT * FROM Team ORDER BY Conference'):
     def read_csv(self):
-        with open('mario_stats_csv.csv', newline='') as csvfile:
+        with open('setup/mario_stats_csv.csv', newline='') as csvfile:
             reader = csv.reader(csvfile, delimiter=',', quotechar='|')
             characters = []
             for row in reader:
@@ -143,7 +139,7 @@ class Import():
     def setup_is_captain(self, data):
         is_captain = 0
 
-        if (data is not ""):
+        if (data != ""):
             is_captain = 1
         return is_captain
 
@@ -160,7 +156,7 @@ class Import():
 
 # Run this at start of every script so database updates are clean
 def clear_database():
-        connection = sqlite3.connect('../mario.db')
+        connection = sqlite3.connect('./mario.db')
         cursor = connection.cursor()
 
         cursor.execute('DELETE FROM BatterStats;')
@@ -177,7 +173,6 @@ def clear_database():
         cursor.execute('DELETE FROM Franchise;')
 
         connection.commit()
-
         connection.close()
 
 clear_database()
