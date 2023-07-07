@@ -7,7 +7,7 @@ import datetime
 # Get current and then parent directories
 
 sys.path.append(".")
-from src import Character
+from src.Shared import Character
 
 version = 1.0
 class Import():

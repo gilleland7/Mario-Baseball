@@ -1,6 +1,6 @@
 import sqlite3
 
-class API():
+class BackendAPI():
     def __init__(self):
         self.cursor, self.connection = self.connect()
       
@@ -15,7 +15,14 @@ class API():
         connection.commit()
         connection.close()
 
+    # Example
     def get_all_character_names(self):
         self.cursor.execute('SELECT name, type FROM Character;')
         results = self.cursor.fetchall()
         return results
+    
+    #################################################
+    ############# Main In Season Screen #############
+    #################################################
+
+    
