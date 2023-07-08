@@ -1,0 +1,1 @@
+LUIGI_KNIGHTS = "Luigi Knights"
