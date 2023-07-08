@@ -14,8 +14,9 @@ class PitcherStats():
         self.holds = 0
         self.WHIP = 0.0
         self.strikeouts = 0
+        self.hitByPitch = 0
         
-    def setup(self, ip, gp, bb, h, r, er, hr, e, w, l, s, hd, whip, k):
+    def setup(self, ip, gp, bb, h, r, er, hr, e, w, l, s, hd, whip, k, hbp):
         self.IP = ip
         self.gamesPitched = gp
         self.walks = bb
@@ -30,3 +31,4 @@ class PitcherStats():
         self.holds = hd
         self.WHIP = whip
         self.strikeouts = k
+        self.hitByPitch = hbp

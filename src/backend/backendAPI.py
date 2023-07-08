@@ -103,4 +103,34 @@ class BackendAPI():
         results = self.cursor.fetchall()
         return results
     
+    #################################################
+    ################# Play Game Screen ##############
+    #################################################
+
+    def set_batter_stats(self, batterStatsID, playerStats):
+        batterStats = playerStats.batterStats
+        self.cursor.execute('UPDATE BatterStats SET atBats=?, BA=?, walks=?, hbp=?, strikeouts=?, singles=?, doubles=?, triples=?, homeruns=?, sacrifices=?, rbi=?, runs=?, obp=?, slg=?, stolenbases=?, caughtStealing=? WHERE id=?;', (batterStats.atBats, batterStats.average, batterStats.walks, batterStats.hitByPitch, batterStats.strikeouts, batterStats.singles, batterStats.doubles, batterStats.triples, batterStats.homeRuns, batterStats.sacrifices, batterStats.rbi, batterStats.runs, batterStats.obp, batterStats.slg, batterStats.stolenBases, batterStats.caughtStealing, batterStatsID))
+        self.connection.commit()
+
+    def set_pitching_stats(self, pitchingStatsID, playerStats):
+        pitcherStats = playerStats.pitcherStats
+        self.cursor.execute('UPDATE BatterStats SET IP=?, gamesPitched=?, walks=?, hits=?, runs=?, earnedRuns=?, homeRuns=?, era=?, wins=?, losses=?, saves=?, holds=?, whip=?, strikeouts=?, hitByPitch=? WHERE id=?;', (pitcherStats.IP, pitcherStats.gamesPitched, pitcherStats.walks, pitcherStats.hits, pitcherStats.runs, pitcherStats.earnedRuns, pitcherStats.homeRuns, pitcherStats.era, pitcherStats.wins, pitcherStats.losses, pitcherStats.saves, pitcherStats.holds, pitcherStats.WHIP, pitcherStats.strikeouts, pitcherStats.hitByPitch, pitchingStatsID))
+        self.connection.commit()
+
+    def set_defensive_stats(self, defensiveStatsID, playerStats):
+        defensiveStats = playerStats.defensiveStats
+        self.cursor.execute('UPDATE DefensiveStats SET nicePlays=?, putOuts=?, errors=? WHERE id=?;', (defensiveStats.nicePlays, defensiveStats.putOuts, defensiveStats.errors, defensiveStatsID))
+        self.connection.commit()
     
+    def update_war(self, playerStatsID, war):
+        self.cursor.execute('UPDATE PlayerStats SET WAR=? WHERE id=?;', (war, playerStatsID))
+        self.connection.commit()
+
+    def set_team_stats(self, teamStats, teamStatsID):
+        self.cursor.execute('UPDATE Team SET overall=?, wins=?, losses=?, ties=? WHERE id=?;', (teamStats.overall, teamStats.wins, teamStats.losses, teamStats.ties, teamStatsID))
+        self.connection.commit()  
+
+    def set_game_result(self, game, gameID):
+        self.cursor.execute('UPDATE Game SET homeScore=?, awayScore=? WHERE id=?;', (game.homeScore, game.awayScore, gameID))
+        self.connection.commit()  
+
