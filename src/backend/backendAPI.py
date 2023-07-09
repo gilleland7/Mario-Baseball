@@ -134,3 +134,105 @@ class BackendAPI():
         self.cursor.execute('UPDATE Game SET homeScore=?, awayScore=? WHERE id=?;', (game.homeScore, game.awayScore, gameID))
         self.connection.commit()  
 
+    #################################################
+    ################## Draft Screen #################
+    #################################################
+
+     # [id, name, type, isCaptain, bat, pitch, field, run, overall, png, PlayerStats ID] 
+    def get_captains(self):
+        self.cursor.execute('SELECT * FROM Character isCaptain = 1;')
+        results = self.cursor.fetchall()
+        return results
+    
+    def add_team(self, teamName, teamStatsID, stadium, div, logo, userTeam):
+        self.cursor.execute('INSERT INTO Team (name, stats, stadium, division, logo, playerTeam) VALUES (?,?,?,?,?,?)', (teamName, teamStatsID, stadium, div, logo, userTeam))
+        self.connection.commit() 
+    
+    def create_game(self, gameNum, stadiumID, homeTeamID, awayTeamID):
+        self.cursor.execute('INSERT INTO Game (gameNumber, stadium, homeTeam, awayTeam) VALUES (?,?,?,?)', (gameNum, stadiumID, homeTeamID, awayTeamID))
+        self.connection.commit() 
+
+    # int id
+    def get_stadium_id(self, name):
+        self.cursor.execute('SELECT id FROM Stadium WHERE name=?;', (name,))
+        results = self.cursor.fetchall()
+        return results
+    
+    # int id
+    def get_division_id(self, name):
+        self.cursor.execute('SELECT id FROM Division WHERE name=?;', (name,))
+        results = self.cursor.fetchall()
+        return results
+    
+    def add_player_to_team(self, teamName, characterID, charNumSt):
+        self.cursor.execute('UPDATE Team SET ?=? WHERE name=?;', (charNumSt, characterID, teamName))
+        self.connection.commit() 
+
+    # id, characterOneID, characterTwoID, type
+    def get_chemistry(self, name, type):
+        self.cursor.execute('SELECT * FROM Chemistry WHERE type=? AND (characterOne=? OR characterTWO=?);', (type, name, name))
+        results = self.cursor.fetchall()
+        return results
+
+    # string type
+    def get_player_type(self, playerID):
+        self.cursor.execute('SELECT type FROM Character WHERE name=?;', (playerID,))
+        results = self.cursor.fetchall()
+        return results
+
+    def set_user_team(self, name):
+        self.cursor.execute('UPDATE Team SET playerTeam=1 WHERE name=?;', (name,))
+        self.connection.commit() 
+    
+    #################################################
+    ################ Playoffs Screen ################
+    #################################################
+
+    # round
+    def get_round(self):
+        self.cursor.execute('SELECT overallRound FROM Playoffs;')
+        results = self.cursor.fetchall()
+        return results
+
+    def advance_round(self, newRound, championshipID):
+        self.cursor.execute('UPDATE Playoffs SET overallRound=?, championship=?;', (newRound, championshipID))
+        self.connection.commit() 
+
+    def end_playoffs(self, champTeamID):
+        self.cursor.execute('UPDATE Playoffs SET champion=?;', (champTeamID,))
+        self.connection.commit() 
+    
+    # id, overallRound, roundOneDivisionOne Series ID,  roundOneDivisionTwo Series ID, Championship Series ID, Champion Team ID
+    def get_playoffs(self):
+        self.cursor.execute('SELECT * FROM Playoffs;')
+        results = self.cursor.fetchall()
+        return results
+    
+    # id, round, highSeed, lowSeed, highSeedWins, lowSeedWins, gameOne..., winner
+    def get_playoff_series(self, id):
+        self.cursor.execute('SELECT * FROM PlayoffSeries WHERE id=?;', (id,))
+        results = self.cursor.fetchall()
+        return results
+    
+    def create_playoff_series(self, round, highTeamID, lowTeamID, gameOneID, gameTwoID, gameThreeID, gameFourID, gameFiveID, gameSixID, gameSevenID):
+        self.cursor.execute('INSERT INTO PlayoffSeries (round, highSeed, lowSeed, gameOne, gameTwo, gameThree, gameFour, gameFive, gameSix, gameSeven) VALUES (?,?,?,?,?,?,?,?,?,?);', (round, highTeamID, lowTeamID, gameOneID, gameTwoID, gameThreeID, gameFourID, gameFiveID, gameSixID, gameSevenID))
+        self.connection.commit() 
+    
+    def create_playoffs(self, roundOneDivOneID, roundOneDivTwoID):
+        self.cursor.execute('INSERT INTO Playoffs (round, roundOneDivisionOne, roundOneDivisionTwo) VALUES (?,?);', (roundOneDivOneID, roundOneDivTwoID))
+        self.connection.commit()
+
+    def update_playoff_series(self, id, winner, amount):
+        self.cursor.execute('UPDATE PlayoffSeries SET ?=? WHERE id=?;', (winner, amount, id))
+        self.connection.commit()  
+
+    def end_playoff_series(self, id, winnerID):
+        self.cursor.execute('UPDATE PlayoffSeries SET winner=? WHERE id=?;', (winnerID, id))
+        self.connection.commit()  
+
+    # Team ID
+    def get_champion(self):
+        self.cursor.execute('SELECT champion FROM Playoffs;')
+        results = self.cursor.fetchall()
+        return results
+
