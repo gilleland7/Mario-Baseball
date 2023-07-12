@@ -236,3 +236,56 @@ class BackendAPI():
         results = self.cursor.fetchall()
         return results
 
+    #################################################
+    ############## End of Season Screen #############
+    #################################################
+
+    # name, winner, season
+    def get_playoffs(self, seasonYear):
+        self.cursor.execute('SELECT * FROM Awards WHERE season=?;', (seasonYear,))
+        results = self.cursor.fetchall()
+        return results
+    
+    def set_awards(self, seasonYear, characterID, awardName):
+        self.cursor.execute('INSERT INTO Awards (season, winner, name) VALUES (?,?,?);', (seasonYear, characterID, awardName))
+        self.connection.commit()
+
+    def clear_team(self):
+        self.cursor.execute('DELETE FROM Team;')
+        self.connection.commit()
+    
+    def clear_defensive_stats(self):
+        self.cursor.execute('DELETE FROM DefensiveStats;')
+        self.connection.commit()
+    
+    def clear_pitching_stats(self):
+        self.cursor.execute('DELETE FROM PitchingStats;')
+        self.connection.commit()
+
+    def clear_batter_stats(self):
+        self.cursor.execute('DELETE FROM BatterStats;')
+        self.connection.commit()
+    
+    def clear_player_stats(self):
+        self.cursor.execute('DELETE FROM PlayerStats;')
+        self.connection.commit()
+    
+    def clear_playoffs(self):
+        self.cursor.execute('DELETE FROM Playoffs;')
+        self.connection.commit()
+    
+    def clear_playoff_series(self):
+        self.cursor.execute('DELETE FROM PlayoffSeries;')
+        self.connection.commit()
+    
+    def clear_game(self):
+        self.cursor.execute('DELETE FROM Game;')
+        self.connection.commit()
+    
+    def clear_team_stats(self):
+        self.cursor.execute('DELETE FROM TeamStats;')
+        self.connection.commit()
+    
+    def set_previous_season(self, champ, runnerUp, divOneLoser, divTwoLoser, year):
+        self.cursor.execute('INSERT INTO Season (year, champion, runnerUp, semiFinalsTeamOne, semiFinalsTeamTwo) VALUES (?,?,?,?,?);', (year, champ, runnerUp, divOneLoser, divTwoLoser))
+        self.connection.commit()
