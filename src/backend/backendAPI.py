@@ -289,3 +289,13 @@ class BackendAPI():
     def set_previous_season(self, champ, runnerUp, divOneLoser, divTwoLoser, year):
         self.cursor.execute('INSERT INTO Season (year, champion, runnerUp, semiFinalsTeamOne, semiFinalsTeamTwo) VALUES (?,?,?,?,?);', (year, champ, runnerUp, divOneLoser, divTwoLoser))
         self.connection.commit()
+    
+    #################################################
+    ############## Previous Season Screen ###########
+    #################################################
+
+    # year, champion, runnerUp, semiFinalsTeamOne, semiFinalsTeamTwo
+    def get_season(self, year):
+        self.cursor.execute('SELECT * FROM Season WHERE year=?;', (year,))
+        results = self.cursor.fetchall()
+        return results
