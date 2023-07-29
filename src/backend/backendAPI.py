@@ -241,7 +241,7 @@ class BackendAPI():
     #################################################
 
     # name, winner, season
-    def get_playoffs(self, seasonYear):
+    def get_awards(self, seasonYear):
         self.cursor.execute('SELECT * FROM Awards WHERE season=?;', (seasonYear,))
         results = self.cursor.fetchall()
         return results
