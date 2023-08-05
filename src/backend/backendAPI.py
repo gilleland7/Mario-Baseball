@@ -73,6 +73,12 @@ class BackendAPI():
         results = self.cursor.fetchall()
         return results
     
+    # idOne, idTwo, ... idNine
+    def get_player_ids_by_team(self, team):
+        self.cursor.execute('SELECT charOne, charTwo, charThree, charFour, charFive, charSix, charSeven, charEight, charNine FROM Team WHERE name = ?;', (team,))
+        results = self.cursor.fetchall()
+        return results
+    
     # id, name, type, isCaptain, bat, pitch, field, run, overall, png, PlayerStats ID 
     def get_player_by_id(self, id):
         self.cursor.execute('SELECT * FROM Character WHERE id = ?;', (id,))
@@ -92,8 +98,8 @@ class BackendAPI():
         return results
 
     # id, gameNum, stadium ID, homeTeam name, awayTeam name, homeScore, awayScore
-    def get_previous_game(self, userTeamID):
-        self.cursor.execute('SELECT * FROM Game WHERE (homeTeam = ? OR awayTeam = ?);', (userTeamID, userTeamID))
+    def get_previous_game(self, userTeamID, gameNum):
+        self.cursor.execute('SELECT * FROM Game WHERE (userTeam = ? OR awayTeam = ?) AND gameNumber = ?;', (userTeamID, userTeamID, gameNum))
         results = self.cursor.fetchall()
         return results
     
@@ -132,7 +138,7 @@ class BackendAPI():
 
     def set_game_result(self, game, gameID):
         self.cursor.execute('UPDATE Game SET homeScore=?, awayScore=? WHERE id=?;', (game.homeScore, game.awayScore, gameID))
-        self.connection.commit()  
+        self.connection.commit() 
 
     #################################################
     ################## Draft Screen #################
@@ -294,7 +300,7 @@ class BackendAPI():
     ############## Previous Season Screen ###########
     #################################################
 
-    # year, champion, runnerUp, semiFinalsTeamOne, semiFinalsTeamTwo
+    # year, champion, runnerUp, semiFinalsTeamOne, semiFinalsTeamTwo, currentGameNum
     def get_season(self, year):
         self.cursor.execute('SELECT * FROM Season WHERE year=?;', (year,))
         results = self.cursor.fetchall()
