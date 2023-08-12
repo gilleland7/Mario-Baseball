@@ -1,3 +1,5 @@
+import PlayerStats
+
 class Character():
     def __init__(self):
         self.pitch = 0
@@ -9,8 +11,9 @@ class Character():
         self.type = ""
         self.is_captain = 0
         self.good_chemistry = [] # Good chemistry = 1
-        self.bad_chemistry = [] # bad chemistry = 0
+        self.bad_chemistry = [] # Bad chemistry = 0
         self.png = ""
+        self.stats = PlayerStats()
         
     def setup(self, p, h, f, r, o, n, t, ic, gc, bc):
         self.pitch = p

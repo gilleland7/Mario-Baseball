@@ -128,7 +128,7 @@ class Import():
 
     def setup_name(self, data):
       name = data
-      type = None
+      type = ""
       if ("(" in data):
           array = data.split("(") # removes the first (
           type = array[1][:-1] # removes the final )

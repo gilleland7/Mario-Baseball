@@ -82,3 +82,46 @@ class MiddlewareAPI():
         results = self.cursor.fetchall()
 
         return results
+    
+
+    #################################################
+    ############# Play Game Screen #############
+    #################################################
+
+    def update_character_stats(self, character):
+        name = character.name
+        char_type = character.type
+        
+        self.cursor.execute("SELECT id FROM Character WHERE name = ? AND type = ?;", (name, char_type))   
+        results = self.cursor.fetchall()
+        id = results[0][0]
+        
+        stats_id = self.backend.get_player_stats(id)
+
+        self.backend.update_war(stats_id, character.war)
+
+        self.backend.set_defensive_stats(stats_id, character.stats)
+        self.backend.set_pitching_stats(stats_id, character.stats)
+        self.backend.set_batter_stats(stats_id, character.stats)
+
+    def update_team_stats(self, team):
+        self.cursor.execute("SELECT stats FROM Team WHERE name = ?;", (team.name,))   
+        results = self.cursor.fetchall()
+        id = results[0][0]
+
+        self.backend.set_team_stats(team.stats, id)
+
+    def set_game_results(self, game):
+        self.cursor.execute("SELECT id FROM Team WHERE name = ?;", (game.awayTeam.name))   
+        results = self.cursor.fetchall()
+        away_id = results[0][0]
+
+        self.cursor.execute("SELECT id FROM Team WHERE name = ?;", (game.homeTeam.name))   
+        results = self.cursor.fetchall()
+        home_id = results[0][0]
+
+        self.cursor.execute("SELECT id FROM Game WHERE gameNumber = ? AND homeTeam = ? AND awayTeam = ?;", (game.gameNumber, home_id, away_id))   
+        results = self.cursor.fetchall()
+        id = results[0][0]
+
+        self.backend.set_game_result(game, id)

@@ -1,16 +1,39 @@
-import BatterStats
-import DefensiveStats
-import PitcherStats
+import TeamStats
+import Character
+import Stadium
+import Division
 
-class PlayerStats():
+class Team():
     def __init__(self):
-        self.WAR = 0.0
-        self.battingStats = BatterStats()
-        self.defensiveStats = DefensiveStats()
-        self.pitcherStats = PitcherStats()
+        self.name = 0.0
+        self.charOne = Character()
+        self.charTwo = Character()
+        self.charThree = Character()
+        self.charFour = Character()
+        self.charFive = Character()
+        self.charSix = Character()
+        self.charSeven = Character()
+        self.charEight = Character()
+        self.charNine = Character()
+        self.stats = TeamStats()
+        self.stadium = Stadium()
+        self.division = Division()
+        self.playerTeam = False
+        self.logo = ""
         
-    def setup(self, war, bs, ds, ps):
-        self.WAR = war
-        self.battingStats = bs
-        self.defensiveStats = ds
-        self.pitcherStats = ps
+    def setup(self, n, c1, c2, c3, c4, c5, c6, c7, c8, c9, st, stad, div, pt, l):
+        self.name = n
+        self.charOne = c1
+        self.charTwo = c2
+        self.charThree = c3
+        self.charFour = c4
+        self.charFive = c5
+        self.charSix = c6
+        self.charSeven = c7
+        self.charEight = c8
+        self.charNine = c9
+        self.stats = st
+        self.stadium = stad
+        self.division = div
+        self.playerTeam = pt
+        self.logo = l
