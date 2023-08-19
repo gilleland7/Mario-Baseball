@@ -154,19 +154,19 @@ class BackendAPI():
         self.cursor.execute('INSERT INTO Team (name, stats, stadium, division, logo, playerTeam) VALUES (?,?,?,?,?,?)', (teamName, teamStatsID, stadium, div, logo, userTeam))
         self.connection.commit() 
     
-    def create_game(self, gameNum, stadiumID, homeTeamID, awayTeamID):
-        self.cursor.execute('INSERT INTO Game (gameNumber, stadium, homeTeam, awayTeam) VALUES (?,?,?,?)', (gameNum, stadiumID, homeTeamID, awayTeamID))
+    def create_game(self, gameNum, stadium, homeTeam, awayTeam):
+        self.cursor.execute('INSERT INTO Game (gameNumber, stadium, homeTeam, awayTeam) VALUES (?,?,?,?)', (gameNum, stadium, homeTeam, awayTeam))
         self.connection.commit() 
 
-    # int id
-    def get_stadium_id(self, name):
-        self.cursor.execute('SELECT id FROM Stadium WHERE name=?;', (name,))
+    # string name
+    def get_stadium(self, name):
+        self.cursor.execute('SELECT stadium FROM Team WHERE name=?;', (name,))
         results = self.cursor.fetchall()
         return results
     
-    # int id
-    def get_division_id(self, name):
-        self.cursor.execute('SELECT id FROM Division WHERE name=?;', (name,))
+    # string name
+    def get_division(self, name):
+        self.cursor.execute('SELECT division FROM Team WHERE name=?;', (name,))
         results = self.cursor.fetchall()
         return results
     
@@ -179,6 +179,10 @@ class BackendAPI():
         self.cursor.execute('SELECT * FROM Chemistry WHERE type=? AND (characterOne=? OR characterTWO=?);', (type, name, name))
         results = self.cursor.fetchall()
         return results
+    
+    # bool
+    def check_if_player_is_on_any_team(self, playerID):
+        self.cursor.execute('SELECT * FROM TEAM WHERE charOne = ? OR charTwo = ? OR charThree = ? OR charFour = ? OR charFive = ? OR charSix = ? OR charSeven = ? OR charEight = ? OR charNine = ?;',(playerID, playerID, playerID, playerID, playerID, playerID, playerID, playerID, playerID))
 
     # string type
     def get_player_type(self, playerID):

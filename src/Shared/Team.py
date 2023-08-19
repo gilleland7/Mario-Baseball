@@ -5,7 +5,7 @@ import Division
 
 class Team():
     def __init__(self):
-        self.name = 0.0
+        self.name = ""
         self.charOne = Character()
         self.charTwo = Character()
         self.charThree = Character()

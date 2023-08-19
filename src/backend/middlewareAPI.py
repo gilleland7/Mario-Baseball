@@ -1,5 +1,6 @@
 import sqlite3
 from backendAPI import BackendAPI
+from Strings import *
 
 class MiddlewareAPI():
     def __init__(self):
@@ -81,8 +82,7 @@ class MiddlewareAPI():
         self.cursor.execute("SELECT Year FROM Season ORDER BY Year DESC;")   
         results = self.cursor.fetchall()
 
-        return results
-    
+        return results 
 
     #################################################
     ############# Play Game Screen #############
@@ -125,3 +125,89 @@ class MiddlewareAPI():
         id = results[0][0]
 
         self.backend.set_game_result(game, id)
+
+    #################################################
+    ############# Draft Screen #############
+    #################################################
+
+    # [id, name, type, isCaptain, bat, pitch, field, run, overall, png, PlayerStats ID] 
+    def get_captains(self):
+        results = self.backend.get_captains()
+
+        return results
+    
+    def add_team(self, team, division, isPlayer):
+        div_id = self.backend.get_division_id(division)[0]
+        stadium = STADIUM_MAPPING[team.name]
+        stadium_id = self.backend.get_stadium_id(stadium)[0]
+        logo = stadium + " logo.png"
+
+        self.backend.cursor.execute('INSERT INTO TeamStats')
+        self.backend.connection.commit() 
+
+        self.backend.cursor.execute('SELECT id FROM TeamStats;')
+        results = self.cursor.fetchall()
+        team_id = len(results)
+
+        self.backend.add_team(team, team_id, stadium_id, div_id, logo, isPlayer)
+
+    def add_player_to_team(self, team, player):
+        char_id = self.backend.get_player_by_name(player.name, player.type)[0]
+
+        team_full = self.backend.get_team(team.name)[0]
+        charNumSt = "char"
+
+        if (team_full[1] == None):
+            charNumSt += "One"
+        elif (team_full[2] == None):
+            charNumSt += "Two"
+        elif (team_full[3] == None):
+            charNumSt += "Three"
+        elif (team_full[4] == None):
+            charNumSt += "Four"
+        elif (team_full[5] == None):
+            charNumSt += "Five"
+        elif (team_full[6] == None):
+            charNumSt += "Six"
+        elif (team_full[7] == None):
+            charNumSt += "Seven"
+        elif (team_full[8] == None):
+            charNumSt += "Eight"
+        elif (team_full[9] == None):
+            charNumSt += "Nine"
+
+        self.backend.add_player_to_team(team.name, char_id, charNumSt)
+
+    # bool
+    def check_if_player_is_on_team(self, character):
+        char_id = self.backend.get_player_by_name(character.name, character.type)[0]
+        results = self.backend.check_if_player_is_on_any_team(char_id)
+
+        onTeam = (len(results) > 0)
+
+        return onTeam
+    
+    # id
+    def get_character_id(self,character):
+        char_id = self.backend.get_player_by_name(character.name, character.type)[0]
+
+        return char_id
+    
+    def set_user_team(self, team):
+        self.backend.set_user_team(team.name)
+
+    # name
+    def get_stadium(self, team):
+        stadium = self.backend.get_stadium(team.name)[0]
+
+        return stadium
+    
+    # name
+    def get_division(self, team):
+        div = self.backend.get_division(team.name)[0]
+
+        return div
+    
+    def create_game(self, gameNum, home, away):
+        stadium = self.get_stadium(home.name)[0]
+        self.backend.create_game(gameNum, stadium, home.name, away.name)

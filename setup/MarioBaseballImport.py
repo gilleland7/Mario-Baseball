@@ -31,7 +31,7 @@ class Import():
     def close(self, connection):
         # Save the changes
         connection.commit()
-        connection.close()   
+        connection.close()  
 
     def add_characters_to_database(self, characters):
         id = 1
