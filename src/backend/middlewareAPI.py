@@ -1,4 +1,4 @@
-import sqlite3
+import random
 from backendAPI import BackendAPI
 from Strings import *
 
@@ -6,6 +6,7 @@ class MiddlewareAPI():
     def __init__(self):
         self.backend = BackendAPI()
         self.cursor, self.connection = self.backend.connect()
+        self.championship_round = 2
 
     # Example
     def get_all_character_names(self):
@@ -211,3 +212,78 @@ class MiddlewareAPI():
     def create_game(self, gameNum, home, away):
         stadium = self.get_stadium(home.name)[0]
         self.backend.create_game(gameNum, stadium, home.name, away.name)
+
+    #################################################
+    ############# Playoffs Screen #############
+    #################################################
+
+    # round
+    def get_round(self):
+        results = self.backend.get_round()[0]
+        return results
+    
+    def create_series(self, lowerSeed, higherSeed, round):
+        self.create_game(1, higherSeed, lowerSeed)
+        gameOne = self.cursor.lastrowid
+        self.create_game(2, higherSeed, lowerSeed)
+        gameTwo = self.cursor.lastrowid
+        self.create_game(3, lowerSeed, higherSeed)
+        gameThree = self.cursor.lastrowid
+        self.create_game(4, lowerSeed, higherSeed)
+        gameFour = self.cursor.lastrowid
+        self.create_game(5, lowerSeed, higherSeed)
+        gameFive = self.cursor.lastrowid
+        self.create_game(6, higherSeed, lowerSeed)
+        gameSix = self.cursor.lastrowid
+        self.create_game(7, higherSeed, lowerSeed)
+        gameSeven = self.cursor.lastrowid
+        
+        self.backend.create_playoff_series(round, higherSeed, lowerSeed, gameOne, gameTwo, gameThree, gameFour, gameFive, gameSix, gameSeven)
+   
+    def advance_round(self):
+        playoffs = self.backend.get_playoffs()[0]
+
+        roundOneDivOne = playoffs[2]
+        roundOneDivTwo = playoffs[3]
+
+        seriesOne = self.backend.get_playoff_series(roundOneDivOne)[0]
+        seriesOneWinner = seriesOne[13]
+
+        seriesTwo = self.backend.get_playoff_series(roundOneDivTwo)[0]
+        seriesTwoWinner = seriesTwo[13]
+        
+        # Get seeding
+        teamOne = self.backend.get_team(seriesOneWinner)[0]
+        teamOneStatsID = teamOne[10]
+        self.cursor.execute('SELECT wins FROM TeamStats WHERE id = ?;', (teamOneStatsID,))
+        teamOneWins = self.cursor.fetchall()[0]
+
+        teamTwo = self.backend.get_team(seriesTwoWinner)[0]
+        teamTwoStatsID = teamTwo[10]
+        self.cursor.execute('SELECT wins FROM TeamStats WHERE id = ?;', (teamTwoStatsID,))
+        teamTwoWins = self.cursor.fetchall()[0]
+
+        higherSeed = ""
+        lowerSeed = ""
+
+        if (teamOneWins > teamTwoWins):
+            higherSeed = teamOne
+            lowerSeed = teamTwo
+        elif (teamTwoWins > teamOneWins):
+            higherSeed = teamTwo
+            lowerSeed = teamOne
+        else:
+            randomNum = random.randrange(1, 100)
+
+            if (randomNum > 50):
+                higherSeed = teamOne
+                lowerSeed = teamTwo
+            else:
+                higherSeed = teamTwo
+                lowerSeed = teamOne
+
+        # Create Series
+        self.create_series(higherSeed, lowerSeed, self.championship_round)
+        seriesID = self.cursor.lastrowid
+        
+        self.backend.advance_round(self.championship_round, seriesID)
