@@ -2,6 +2,8 @@ import random
 from backendAPI import BackendAPI
 from Strings import *
 
+WILDCARD = "*"
+
 class MiddlewareAPI():
     def __init__(self):
         self.backend = BackendAPI()
@@ -373,3 +375,39 @@ class MiddlewareAPI():
 
         team = self.backend.get_team(champion)
         return team
+    
+    #################################################
+    ############# End of Season Screen #############
+    #################################################
+
+    # name, winner, season
+    def get_award_winners(self):
+        year = self.get_year()[0][0]
+        self.backend.get_awards(year)
+
+    def set_awards(self, winners_awards_dict):
+        year = self.get_year()[0][0]
+
+        for winner in winners_awards_dict:
+            id = self.backend.get_player_by_name(winner.name, winner.type)[0][0]
+            self.backend.set_awards(year, id, winners_awards_dict[winner])
+
+    def reset_season(self):
+        self.backend.clear_team()
+        self.backend.clear_team_stats()
+        self.backend.clear_player_stats()
+        self.backend.clear_batter_stats()
+        self.backend.clear_defensive_stats()
+        self.backend.clear_pitching_stats()
+        self.backend.clear_playoffs()
+        self.backend.clear_playoff_series()
+        self.backend.clear_game()
+
+    #################################################
+    ############# Previous Seasons Screen #############
+    #################################################
+
+    # year, champion, runnerUp, semiFinalsTeamOne, semiFinalsTeamTwo, currentGameNum
+    def get_seasons(self):
+        seasons = self.backend.get_season(WILDCARD)
+        return seasons
