@@ -224,9 +224,13 @@ class BackendAPI():
         results = self.cursor.fetchall()
         return results
     
+    # series_id
     def create_playoff_series(self, round, highTeamID, lowTeamID, gameOneID, gameTwoID, gameThreeID, gameFourID, gameFiveID, gameSixID, gameSevenID):
         self.cursor.execute('INSERT INTO PlayoffSeries (round, highSeed, lowSeed, gameOne, gameTwo, gameThree, gameFour, gameFive, gameSix, gameSeven) VALUES (?,?,?,?,?,?,?,?,?,?);', (round, highTeamID, lowTeamID, gameOneID, gameTwoID, gameThreeID, gameFourID, gameFiveID, gameSixID, gameSevenID))
+        series_id = self.cursor.lastrowid
         self.connection.commit() 
+
+        return series_id
     
     def create_playoffs(self, roundOneDivOneID, roundOneDivTwoID):
         self.cursor.execute('INSERT INTO Playoffs (round, roundOneDivisionOne, roundOneDivisionTwo) VALUES (?,?);', (roundOneDivOneID, roundOneDivTwoID))

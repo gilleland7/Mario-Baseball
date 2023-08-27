@@ -222,6 +222,7 @@ class MiddlewareAPI():
         results = self.backend.get_round()[0]
         return results
     
+    # series_id
     def create_series(self, lowerSeed, higherSeed, round):
         self.create_game(1, higherSeed, lowerSeed)
         gameOne = self.cursor.lastrowid
@@ -238,8 +239,9 @@ class MiddlewareAPI():
         self.create_game(7, higherSeed, lowerSeed)
         gameSeven = self.cursor.lastrowid
         
-        self.backend.create_playoff_series(round, higherSeed, lowerSeed, gameOne, gameTwo, gameThree, gameFour, gameFive, gameSix, gameSeven)
-   
+        series_id = self.backend.create_playoff_series(round, higherSeed, lowerSeed, gameOne, gameTwo, gameThree, gameFour, gameFive, gameSix, gameSeven)
+        return series_id
+
     def advance_round(self):
         playoffs = self.backend.get_playoffs()[0]
 
@@ -287,3 +289,87 @@ class MiddlewareAPI():
         seriesID = self.cursor.lastrowid
         
         self.backend.advance_round(self.championship_round, seriesID)
+
+    def update_series(self, winner, loser):
+        series = self.get_playoff_series(winner, loser)[0]
+    
+        series_id = series[0]
+        highSeed = series[2]
+        lowSeed = series[3]
+        highSeedWins = series[4]
+        lowSeedWins = series[5]
+
+        team = lowSeed
+        wins = lowSeedWins
+        if (winner.upper() == highSeed.upper()):
+            team = highSeed
+            wins = highSeedWins
+
+        # Need series ID, team seeds, team seed wins
+        self.backend.update_playoff_series(series_id, team, wins)
+
+    def end_series(self, winner):
+        self.backend.cursor.execute("SELECT id FROM PlayoffSeries WHERE highSeed = ? OR lowSeed = ?;", (winner, winner))
+        series_id = self.backend.cursor.fetchall()[0][0]
+
+        self.backend.end_playoff_series(series_id, winner)
+
+    def create_playoffs(self):
+        # Division One
+        div_one = self.backend.get_division(MUSHROOM_DIVISION)[0][0]
+
+        div_one_teams = self.backend.cursor.execute("SELECT id FROM TeamStats INNER JOIN Team ON TeamStats.id=Team.name WHERE division = ? ORDER BY wins DESC LIMIT 2;", (div_one,))
+        
+        div_one_id = self.create_series(div_one_teams[1], div_one_teams[0], 1)    
+
+        # Division Two
+        div_two = self.backend.get_division(FLOWER_DIVISION)[0][0]   
+
+        div_two_teams = self.backend.cursor.execute("SELECT id FROM TeamStats INNER JOIN Team ON TeamStats.id=Team.name WHERE division = ? ORDER BY wins DESC LIMIT 2;", (div_two,))
+
+        div_two_id = self.create_series(div_two_teams[1], div_two_teams[0], 1)
+
+        self.backend.create_playoffs(div_one_id, div_two_id)
+
+    def end_playoffs(self, champion):
+        self.backend.end_playoffs(champion)
+        self.backend.cursor.execute("SELECT highSeed, lowSeed FROM PlayoffSeries WHERE winner = ? ORDER BY round DESC;", (champion,))
+        results = self.backend.cursor.fetchall()
+
+        runner_up = results[0][0]
+        if (runner_up == champion):
+            runner_up = results[0][1]
+ 
+        div_one_semi = results[0][0]
+        if (div_one_semi == champion):
+            div_one_semi = results[0][1]
+
+        self.backend.cursor.execute("SELECT highSeed, lowSeed FROM PlayoffSeries WHERE winner = ? ORDER BY round DESC;", (runner_up,))
+        results = self.backend.cursor.fetchall()
+
+        div_two_semi = results[0][0]
+        if (div_two_semi == runner_up):
+            div_two_semi = results[0][1]
+        
+        franchise = self.backend.get_franchise()
+        year = franchise[0][3]
+
+        self.backend.set_previous_season(champion, runner_up, div_one_semi, div_two_semi, year)
+
+    # id, overallRound, roundOneDivisionOne Series ID,  roundOneDivisionTwo Series ID, Championship Series ID, Champion Team ID
+    def get_playoffs(self):
+        results = self.backend.get_playoffs()
+        return results
+    
+    # id, round, highSeed, lowSeed, highSeedWins, lowSeedWins, gameOne..., winner
+    def get_playoff_series(self, teamOne, teamTwo):
+        self.backend.cursor.execute("SELECT * FROM PlayoffSeries WHERE highSeed = ? AND lowSeed = ? OR highSeed = ? OR lowSeed = ?;", (teamOne, teamTwo, teamTwo, teamOne))
+        results = self.backend.cursor.fetchall()
+        return results
+
+    # name, CharOneID, ... CharNineID, TeamStatsID, Stadium, Division, PlayerTeam (int), logo
+    def get_champion(self):
+        champion = self.backend.get_champion()
+
+        team = self.backend.get_team(champion)
+        return team

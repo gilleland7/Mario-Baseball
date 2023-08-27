@@ -43,6 +43,8 @@ BOWSER_JR_ROOKIES = "Bowser Jr. Rookies"
 BOWSER_JR_PLAYROOM = "Bowser Jr. Playroom"
 BOWSER_JR = "Bowser Jr."
 
+MUSHROOM_DIVISION = "Mushroom"
+FLOWER_DIVISION = "Flower"
 
 STADIUM_MAPPING = {
             MARIO: MARIO_STADIUM,
