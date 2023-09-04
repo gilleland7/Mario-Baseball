@@ -21,9 +21,8 @@ class MiddlewareAPI():
 
     # returns name, CharOneID, ... CharNineID, TeamStatsID, Stadium, Division, PlayerTeam (int), logo   
     def get_user_team(self):
-        self.cursor.execute('SELECT * FROM Team WHERE playerTeam = 1;')
-        results = self.cursor.fetchall()
-        return results
+       results = self.backend.get_player_team()
+       return results
     
     # returns name, CharOneID, ... CharNineID, TeamStatsID, Stadium, Division, PlayerTeam (int), logo   
     def get_team_by_name(self, name):
@@ -82,9 +81,7 @@ class MiddlewareAPI():
     
     # returns year
     def get_year(self):
-        self.cursor.execute("SELECT Year FROM Season ORDER BY Year DESC;")   
-        results = self.cursor.fetchall()
-
+        results = self.backend.get_year()
         return results 
 
     #################################################
@@ -95,8 +92,8 @@ class MiddlewareAPI():
         name = character.name
         char_type = character.type
         
-        self.cursor.execute("SELECT id FROM Character WHERE name = ? AND type = ?;", (name, char_type))   
-        results = self.cursor.fetchall()
+        results = self.backend.get_player_by_name(name, char_type)
+
         id = results[0][0]
         
         stats_id = self.backend.get_player_stats(id)
@@ -108,23 +105,13 @@ class MiddlewareAPI():
         self.backend.set_batter_stats(stats_id, character.stats)
 
     def update_team_stats(self, team):
-        self.cursor.execute("SELECT stats FROM Team WHERE name = ?;", (team.name,))   
-        results = self.cursor.fetchall()
+        results = self.backend.get_team_stats(team.name)
         id = results[0][0]
 
         self.backend.set_team_stats(team.stats, id)
 
     def set_game_results(self, game):
-        self.cursor.execute("SELECT id FROM Team WHERE name = ?;", (game.awayTeam.name))   
-        results = self.cursor.fetchall()
-        away_id = results[0][0]
-
-        self.cursor.execute("SELECT id FROM Team WHERE name = ?;", (game.homeTeam.name))   
-        results = self.cursor.fetchall()
-        home_id = results[0][0]
-
-        self.cursor.execute("SELECT id FROM Game WHERE gameNumber = ? AND homeTeam = ? AND awayTeam = ?;", (game.gameNumber, home_id, away_id))   
-        results = self.cursor.fetchall()
+        results = self.backend.get_game(game.gameNumber, game.homeTeam, game.awayTeam)
         id = results[0][0]
 
         self.backend.set_game_result(game, id)
@@ -136,7 +123,6 @@ class MiddlewareAPI():
     # [id, name, type, isCaptain, bat, pitch, field, run, overall, png, PlayerStats ID] 
     def get_captains(self):
         results = self.backend.get_captains()
-
         return results
     
     def add_team(self, team, division, isPlayer):
@@ -145,12 +131,9 @@ class MiddlewareAPI():
         stadium_id = self.backend.get_stadium_id(stadium)[0]
         logo = stadium + " logo.png"
 
-        self.backend.cursor.execute('INSERT INTO TeamStats')
-        self.backend.connection.commit() 
+        self.backend.add_to_team_stats()
 
-        self.backend.cursor.execute('SELECT id FROM TeamStats;')
-        results = self.cursor.fetchall()
-        team_id = len(results)
+        team_id = self.backend.get_newest_team_id()
 
         self.backend.add_team(team, team_id, stadium_id, div_id, logo, isPlayer)
 

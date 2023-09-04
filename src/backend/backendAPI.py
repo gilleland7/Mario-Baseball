@@ -109,6 +109,13 @@ class BackendAPI():
         results = self.cursor.fetchall()
         return results
     
+    # year
+    def get_year(self):
+        self.cursor.execute("SELECT Year FROM Season ORDER BY Year DESC LIMIT 1;")   
+        results = self.cursor.fetchall()
+
+        return results
+    
     #################################################
     ################# Play Game Screen ##############
     #################################################
@@ -131,6 +138,19 @@ class BackendAPI():
     def update_war(self, playerStatsID, war):
         self.cursor.execute('UPDATE PlayerStats SET WAR=? WHERE id=?;', (war, playerStatsID))
         self.connection.commit()
+
+    # stats ID
+    def get_team_stats(self, name):
+        self.cursor.execute("SELECT stats FROM Team WHERE name = ?;", (name,))   
+        results = self.cursor.fetchall()
+    
+        return results
+    
+    # game ID
+    def get_game(self, gameNumber, homeTeam, awayTeam):
+        self.cursor.execute("SELECT id FROM Game WHERE gameNumber = ? AND homeTeam = ? AND awayTeam = ?;", (gameNumber, homeTeam, awayTeam))   
+        results = self.cursor.fetchall()
+        return results
 
     def set_team_stats(self, teamStats, teamStatsID):
         self.cursor.execute('UPDATE Team SET overall=?, wins=?, losses=?, ties=? WHERE id=?;', (teamStats.overall, teamStats.wins, teamStats.losses, teamStats.ties, teamStatsID))
@@ -193,6 +213,18 @@ class BackendAPI():
     def set_user_team(self, name):
         self.cursor.execute('UPDATE Team SET playerTeam=1 WHERE name=?;', (name,))
         self.connection.commit() 
+
+    def add_to_team_stats(self):
+        self.backend.cursor.execute('INSERT INTO TeamStats')
+        self.backend.connection.commit() 
+
+    # int id of the last team added
+    def get_newest_team_id(self):
+        self.backend.cursor.execute('SELECT id FROM TeamStats;')
+        results = self.cursor.fetchall()
+        team_id = len(results)
+
+        return team_id
     
     #################################################
     ################ Playoffs Screen ################
