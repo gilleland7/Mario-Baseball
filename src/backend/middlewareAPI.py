@@ -242,13 +242,11 @@ class MiddlewareAPI():
         # Get seeding
         teamOne = self.backend.get_team(seriesOneWinner)[0]
         teamOneStatsID = teamOne[10]
-        self.cursor.execute('SELECT wins FROM TeamStats WHERE id = ?;', (teamOneStatsID,))
-        teamOneWins = self.cursor.fetchall()[0]
+        teamOneWins = self.backend.select_wins(teamOneStatsID)[0]
 
         teamTwo = self.backend.get_team(seriesTwoWinner)[0]
         teamTwoStatsID = teamTwo[10]
-        self.cursor.execute('SELECT wins FROM TeamStats WHERE id = ?;', (teamTwoStatsID,))
-        teamTwoWins = self.cursor.fetchall()[0]
+        teamTwoWins = self.backend.select_wins(teamTwoStatsID)[0][0]
 
         higherSeed = ""
         lowerSeed = ""
@@ -294,23 +292,20 @@ class MiddlewareAPI():
         self.backend.update_playoff_series(series_id, team, wins)
 
     def end_series(self, winner):
-        self.backend.cursor.execute("SELECT id FROM PlayoffSeries WHERE highSeed = ? OR lowSeed = ?;", (winner, winner))
-        series_id = self.backend.cursor.fetchall()[0][0]
-
-        self.backend.end_playoff_series(series_id, winner)
+        self.backend.end_playoff_series(winner)
 
     def create_playoffs(self):
         # Division One
         div_one = self.backend.get_division(MUSHROOM_DIVISION)[0][0]
 
-        div_one_teams = self.backend.cursor.execute("SELECT id FROM TeamStats INNER JOIN Team ON TeamStats.id=Team.name WHERE division = ? ORDER BY wins DESC LIMIT 2;", (div_one,))
+        div_one_teams = self.backend.get_division_rankings(div_one)[0]
         
         div_one_id = self.create_series(div_one_teams[1], div_one_teams[0], 1)    
 
         # Division Two
         div_two = self.backend.get_division(FLOWER_DIVISION)[0][0]   
 
-        div_two_teams = self.backend.cursor.execute("SELECT id FROM TeamStats INNER JOIN Team ON TeamStats.id=Team.name WHERE division = ? ORDER BY wins DESC LIMIT 2;", (div_two,))
+        div_two_teams = self.backend.get_division_rankings(div_two)[0]
 
         div_two_id = self.create_series(div_two_teams[1], div_two_teams[0], 1)
 
@@ -318,8 +313,8 @@ class MiddlewareAPI():
 
     def end_playoffs(self, champion):
         self.backend.end_playoffs(champion)
-        self.backend.cursor.execute("SELECT highSeed, lowSeed FROM PlayoffSeries WHERE winner = ? ORDER BY round DESC;", (champion,))
-        results = self.backend.cursor.fetchall()
+        
+        results = self.backend.get_playoff_winners_and_losers(champion)
 
         runner_up = results[0][0]
         if (runner_up == champion):
@@ -329,8 +324,7 @@ class MiddlewareAPI():
         if (div_one_semi == champion):
             div_one_semi = results[0][1]
 
-        self.backend.cursor.execute("SELECT highSeed, lowSeed FROM PlayoffSeries WHERE winner = ? ORDER BY round DESC;", (runner_up,))
-        results = self.backend.cursor.fetchall()
+        results = self.backend.get_playoff_winners_and_losers(runner_up)
 
         div_two_semi = results[0][0]
         if (div_two_semi == runner_up):
@@ -348,8 +342,7 @@ class MiddlewareAPI():
     
     # id, round, highSeed, lowSeed, highSeedWins, lowSeedWins, gameOne..., winner
     def get_playoff_series(self, teamOne, teamTwo):
-        self.backend.cursor.execute("SELECT * FROM PlayoffSeries WHERE highSeed = ? AND lowSeed = ? OR highSeed = ? OR lowSeed = ?;", (teamOne, teamTwo, teamTwo, teamOne))
-        results = self.backend.cursor.fetchall()
+        results = self.backend.get_playoff_series_by_teams(teamOne, teamTwo)
         return results
 
     # name, CharOneID, ... CharNineID, TeamStatsID, Stadium, Division, PlayerTeam (int), logo
