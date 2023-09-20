@@ -9,13 +9,13 @@ app = Flask(__name__)
 @app.route('/data')
 def get_time():
     api = BackendAPI()
-    character_names = api.get_team("luigi knights")
+    character_names = api.get_teams_by_division("Mushroom")
 
     # Returning to show in reactjs
     return {
         'Name':"geek",
         "Age":"22",
-        "Date": str(character_names),
+        "Date": str(character_names[0][0]),
         "programming":"python"
         }
      

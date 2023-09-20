@@ -45,7 +45,7 @@ class BackendAPI():
 
     # id, name, type, isCaptain, bat, pitch, field, run, overall, png, PlayerStats ID 
     def get_teams_by_division(self, division):
-        self.cursor.execute('SELECT * FROM Team WHERE division = ?;', (division))
+        self.cursor.execute('SELECT * FROM Team WHERE division = ?;', (division,))
         results = self.cursor.fetchall()
         return results
     
