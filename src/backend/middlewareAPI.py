@@ -1,5 +1,13 @@
 import random
 from backendAPI import BackendAPI
+
+import sys
+import os
+
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
+
 from Strings import *
 
 WILDCARD = "*"
@@ -22,20 +30,20 @@ class MiddlewareAPI():
     # returns name, CharOneID, ... CharNineID, TeamStatsID, Stadium, Division, PlayerTeam (int), logo   
     def get_user_team(self):
        results = self.backend.get_player_team()
-       return results
+       return results[0][0]
     
     # returns name, CharOneID, ... CharNineID, TeamStatsID, Stadium, Division, PlayerTeam (int), logo   
     def get_team_by_name(self, name):
         results = self.backend.get_team(name)
-        return results
+        return results[0][0]
 
-     # returns name, CharOneID, ... CharNineID, TeamStatsID, Stadium, Division, PlayerTeam (int), logo   
+     # returns [name, CharOneID, ... CharNineID, TeamStatsID, Stadium, Division, PlayerTeam (int), logo]   
     def get_teams_by_division(self, div):
         results = self.backend.get_teams_by_division(div)
         
         return results
     
-    # returns id, name, type, isCaptain, bat, pitch, field, run, overall, png, PlayerStats ID 
+    # returns [id, name, type, isCaptain, bat, pitch, field, run, overall, png, PlayerStats ID] 
     def get_players_by_team(self, team):
         results = self.backend.get_player_ids_by_team(team)
         players = []
@@ -44,45 +52,45 @@ class MiddlewareAPI():
             player = self.backend.get_player_by_id(id)
             players.append(player)
 
-        return players
+        return players[0][0]
 
     # returns id, state, version, season (year)
     def get_franchise(self):
         results = self.backend.get_franchise()
-        return results
+        return results[0]
     
     # returns id, gameNum, stadium ID, homeTeam name, awayTeam name, homeScore, awayScore
     def get_previous_game(self):
         results = self.get_user_team()
-        user_team = results[0][0]
+        user_team = results
 
         results = self.get_year()
-        year = results[0][0]
+        year = results
 
         results = self.backend.get_season(year)     
         current_game = results[0][5] - 1
 
         results = self.backend.get_previous_game(user_team, current_game)
-        return results
+        return results[0]
     
     # returns id, gameNum, stadium ID, homeTeam name, awayTeam name, homeScore, awayScore
     def get_next_game(self):
         results = self.get_user_team()
-        user_team = results[0][0]
+        user_team = results
 
         results = self.get_year()
-        year = results[0][0]
+        year = results
 
         results = self.backend.get_season(year)     
         current_game = results[0][5]
 
         results = self.backend.get_next_game(current_game, user_team)
-        return results
+        return results[0]
     
     # returns year
     def get_year(self):
         results = self.backend.get_year()
-        return results 
+        return results[0][0] 
 
     #################################################
     ############# Play Game Screen #############

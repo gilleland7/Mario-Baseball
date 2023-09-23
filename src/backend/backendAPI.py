@@ -99,13 +99,13 @@ class BackendAPI():
 
     # id, gameNum, stadium ID, homeTeam name, awayTeam name, homeScore, awayScore
     def get_previous_game(self, userTeamID, gameNum):
-        self.cursor.execute('SELECT * FROM Game WHERE (userTeam = ? OR awayTeam = ?) AND gameNumber = ?;', (userTeamID, userTeamID, gameNum))
+        self.cursor.execute('SELECT * FROM Game WHERE (homeTeam = ? OR awayTeam = ?) AND gameNumber = ?;', (userTeamID, userTeamID, gameNum))
         results = self.cursor.fetchall()
         return results
     
     # id, gameNum, stadium ID, homeTeam name, awayTeam name, homeScore, awayScore
     def get_next_game(self, nextGameNum, userTeamID):
-        self.cursor.execute('SELECT * FROM Game WHERE gameNumber = ? AND (homeTeeam = ? OR awayTeam = ?);', (nextGameNum, userTeamID, userTeamID))
+        self.cursor.execute('SELECT * FROM Game WHERE gameNumber = ? AND (homeTeam = ? OR awayTeam = ?);', (nextGameNum, userTeamID, userTeamID))
         results = self.cursor.fetchall()
         return results
     

@@ -96,6 +96,9 @@ class Import():
         state = 0 # 0=preseason, 1=inseason, 2=playoffs  
 
         self.cursor.execute('INSERT INTO Franchise (state, version, year) VALUES (?,?,?)', (state, version, year))
+        
+        self.cursor.execute('INSERT INTO Season (year) VALUES (?)', (2023,))
+
         self.connection.commit() 
 
     # Sample query: cursor.execute('SELECT * FROM Team ORDER BY Conference'):

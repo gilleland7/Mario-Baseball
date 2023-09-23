@@ -8,7 +8,7 @@ function App() {
     const [data, setdata] = useState({
         name: "",
         age: 0,
-        date: "",
+        ex: "",
         programming: "",
     });
  
@@ -22,7 +22,7 @@ function App() {
                 setdata({
                     name: data.Name,
                     age: data.Age,
-                    date: data.Date,
+                    ex: data.ex,
                     programming: data.programming,
                 });
             })
@@ -36,7 +36,7 @@ function App() {
                 {/* Calling a data from setdata for showing */}
                 <p>{data.name}</p>
                 <p>{data.age}</p>
-                <p>{data.date}</p>
+                <p>{data.ex}</p>
                 <p>"HERE"</p>
                 <p>{data.programming}</p>
  
