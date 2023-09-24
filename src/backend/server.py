@@ -3,7 +3,8 @@ from flask import Flask
 from backendAPI import BackendAPI
 from middlewareAPI import MiddlewareAPI
 
-from Shared.Character import Character
+from Shared.Game import Game
+from Shared.Team import Team
 
 # Initializing flask app
 app = Flask(__name__)
@@ -12,11 +13,16 @@ app = Flask(__name__)
 @app.route('/data')
 def get_time():
     api = MiddlewareAPI()
-    ch = Character()
-    ch.name = "Luigi"
-    ch.stats.defensiveStats.errors = 1
+    g = Game()
 
-    ex = api.update_character_stats(ch)
+    t1 = Team()
+    t2 = Team()
+    t1.name = "Luigi Knights"
+    t2.name = "Wario Monstars"
+    
+    g.setup(1, "Wario City", t2, t1, 5, 10)
+
+    ex = api.set_game_results(g)
 
     # Returning to show in reactjs
     return {

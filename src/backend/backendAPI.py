@@ -153,7 +153,7 @@ class BackendAPI():
         return results
 
     def set_team_stats(self, teamStats, teamStatsID):
-        self.cursor.execute('UPDATE Team SET overall=?, wins=?, losses=?, ties=? WHERE id=?;', (teamStats.overall, teamStats.wins, teamStats.losses, teamStats.ties, teamStatsID))
+        self.cursor.execute('UPDATE TeamStats SET overall=?, wins=?, losses=?, ties=? WHERE id=?;', (teamStats.overall, teamStats.wins, teamStats.losses, teamStats.ties, teamStatsID))
         self.connection.commit()  
 
     def set_game_result(self, game, gameID):

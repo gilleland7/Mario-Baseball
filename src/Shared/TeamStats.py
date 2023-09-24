@@ -1,5 +1,3 @@
-import Team
-
 class TeamStats():
     def __init__(self):
         self.overall = 0.0

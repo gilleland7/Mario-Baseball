@@ -1,7 +1,7 @@
-import TeamStats
-import Character
-import Stadium
-import Division
+from .TeamStats import TeamStats
+from .Character import Character
+from .Stadium import Stadium
+from .Division import Division
 
 class Team():
     def __init__(self):

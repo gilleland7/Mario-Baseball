@@ -1,5 +1,5 @@
-import Stadium
-import Team
+from .Stadium import Stadium
+from .Team import Team
 
 class Game():
     def __init__(self):

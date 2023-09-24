@@ -119,7 +119,7 @@ class MiddlewareAPI():
         self.backend.set_team_stats(team.stats, id)
 
     def set_game_results(self, game):
-        results = self.backend.get_game(game.gameNumber, game.homeTeam, game.awayTeam)
+        results = self.backend.get_game(game.gameNumber, game.homeTeam.name, game.awayTeam.name)
         id = results[0][0]
 
         self.backend.set_game_result(game, id)

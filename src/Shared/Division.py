@@ -1,4 +1,4 @@
-class Stadium():
+class Division():
     def __init__(self):
         self.name = ""
 
