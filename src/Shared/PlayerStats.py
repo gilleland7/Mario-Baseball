@@ -1,6 +1,6 @@
-import DefensiveStats
-import PitcherStats
-import BatterStats
+from .DefensiveStats import DefensiveStats
+from .PitcherStats import PitcherStats
+from .BatterStats import BatterStats
 
 class PlayerStats():  
     def __init__(self):

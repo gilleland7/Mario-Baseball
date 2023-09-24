@@ -1,4 +1,5 @@
-import PlayerStats
+from .PlayerStats import PlayerStats
+from Strings import *
 
 class Character():
     def __init__(self):
@@ -8,7 +9,7 @@ class Character():
         self.run = 0
         self.overall = 0.0
         self.name = ""
-        self.type = ""
+        self.type = NONE
         self.is_captain = 0
         self.good_chemistry = [] # Good chemistry = 1
         self.bad_chemistry = [] # Bad chemistry = 0
@@ -27,7 +28,7 @@ class Character():
         self.good_chemistry = gc
         self.bad_chemistry = bc
 
-        if (self.type is not "" and self.type is not None):
+        if (self.type != "" and self.type is not None):
             self.png = self.name + " (" + self.type + ").png"
         else:
             self.png = self.name + ".png"

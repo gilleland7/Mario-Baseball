@@ -3,6 +3,8 @@ from flask import Flask
 from backendAPI import BackendAPI
 from middlewareAPI import MiddlewareAPI
 
+from Shared.Character import Character
+
 # Initializing flask app
 app = Flask(__name__)
  
@@ -10,7 +12,11 @@ app = Flask(__name__)
 @app.route('/data')
 def get_time():
     api = MiddlewareAPI()
-    ex = api.get_next_game()
+    ch = Character()
+    ch.name = "Luigi"
+    ch.stats.defensiveStats.errors = 1
+
+    ex = api.update_character_stats(ch)
 
     # Returning to show in reactjs
     return {

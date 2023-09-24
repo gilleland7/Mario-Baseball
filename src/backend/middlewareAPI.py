@@ -104,9 +104,9 @@ class MiddlewareAPI():
 
         id = results[0][0]
         
-        stats_id = self.backend.get_player_stats(id)
+        stats_id = self.backend.get_player_stats(id)[0][0]
 
-        self.backend.update_war(stats_id, character.war)
+        self.backend.update_war(stats_id, character.stats.war)
 
         self.backend.set_defensive_stats(stats_id, character.stats)
         self.backend.set_pitching_stats(stats_id, character.stats)

@@ -127,7 +127,7 @@ class BackendAPI():
 
     def set_pitching_stats(self, pitchingStatsID, playerStats):
         pitcherStats = playerStats.pitcherStats
-        self.cursor.execute('UPDATE BatterStats SET IP=?, gamesPitched=?, walks=?, hits=?, runs=?, earnedRuns=?, homeRuns=?, era=?, wins=?, losses=?, saves=?, holds=?, whip=?, strikeouts=?, hitByPitch=? WHERE id=?;', (pitcherStats.IP, pitcherStats.gamesPitched, pitcherStats.walks, pitcherStats.hits, pitcherStats.runs, pitcherStats.earnedRuns, pitcherStats.homeRuns, pitcherStats.era, pitcherStats.wins, pitcherStats.losses, pitcherStats.saves, pitcherStats.holds, pitcherStats.WHIP, pitcherStats.strikeouts, pitcherStats.hitByPitch, pitchingStatsID))
+        self.cursor.execute('UPDATE PitchingStats SET IP=?, gamesPitched=?, walks=?, hits=?, runs=?, earnedRuns=?, homeRuns=?, era=?, wins=?, losses=?, saves=?, holds=?, whip=?, strikeouts=?, hitByPitch=? WHERE id=?;', (pitcherStats.IP, pitcherStats.gamesPitched, pitcherStats.walks, pitcherStats.hits, pitcherStats.runs, pitcherStats.earnedRuns, pitcherStats.homeRuns, pitcherStats.era, pitcherStats.wins, pitcherStats.losses, pitcherStats.saves, pitcherStats.holds, pitcherStats.WHIP, pitcherStats.strikeouts, pitcherStats.hitByPitch, pitchingStatsID))
         self.connection.commit()
 
     def set_defensive_stats(self, defensiveStatsID, playerStats):

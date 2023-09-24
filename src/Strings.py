@@ -76,3 +76,5 @@ TEAM_NAME_MAPPING = {
             BOWSER_JR: BOWSER_JR_PLAYROOM
             }
 
+NONE = "None"
+
