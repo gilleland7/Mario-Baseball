@@ -5,6 +5,8 @@ from middlewareAPI import MiddlewareAPI
 
 from Shared.Game import Game
 from Shared.Team import Team
+from Shared.Division import Division
+from Shared.Character import Character
 
 # Initializing flask app
 app = Flask(__name__)
@@ -15,14 +17,20 @@ def get_time():
     api = MiddlewareAPI()
     g = Game()
 
+    div = Division()
+    div.name = "Mushroom"
+
+    ch = Character()
+    ch.name = "Luigi"
+
     t1 = Team()
     t2 = Team()
     t1.name = "Luigi Knights"
-    t2.name = "Wario Monstars"
-    
+    t2.name = "Wario Muscles"
+
     g.setup(1, "Wario City", t2, t1, 5, 10)
 
-    ex = api.set_game_results(g)
+    ex = api.create_game(1, t1, t2)
 
     # Returning to show in reactjs
     return {

@@ -1,5 +1,13 @@
 import sqlite3
 
+import sys
+import os
+
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
+from Strings import *
+
 class BackendAPI():
     def __init__(self):
         self.cursor, self.connection = self.connect()
@@ -166,7 +174,7 @@ class BackendAPI():
 
      # [id, name, type, isCaptain, bat, pitch, field, run, overall, png, PlayerStats ID] 
     def get_captains(self):
-        self.cursor.execute('SELECT * FROM Character isCaptain = 1;')
+        self.cursor.execute('SELECT * FROM Character WHERE isCaptain = 1;')
         results = self.cursor.fetchall()
         return results
     
@@ -191,8 +199,10 @@ class BackendAPI():
         return results
     
     def add_player_to_team(self, teamName, characterID, charNumSt):
-        self.cursor.execute('UPDATE Team SET ?=? WHERE name=?;', (charNumSt, characterID, teamName))
-        self.connection.commit() 
+        # Check to make sure input is clean
+        if (charNumSt == "charOne" or charNumSt == "charTwo" or charNumSt == "charThree" or charNumSt == "charFour" or charNumSt == "charFive" or charNumSt == "charSix" or charNumSt == "charSeven" or charNumSt == "charEight" or charNumSt == "charNine"):
+            self.cursor.execute(f'UPDATE Team SET {charNumSt} =? WHERE name=?;', (characterID, teamName))
+            self.connection.commit() 
 
     # id, characterOneID, characterTwoID, type
     def get_chemistry(self, name, type):
@@ -203,7 +213,9 @@ class BackendAPI():
     # bool
     def check_if_player_is_on_any_team(self, playerID):
         self.cursor.execute('SELECT * FROM TEAM WHERE charOne = ? OR charTwo = ? OR charThree = ? OR charFour = ? OR charFive = ? OR charSix = ? OR charSeven = ? OR charEight = ? OR charNine = ?;',(playerID, playerID, playerID, playerID, playerID, playerID, playerID, playerID, playerID))
-
+        results = self.cursor.fetchall()
+        return results
+    
     # string type
     def get_player_type(self, playerID):
         self.cursor.execute('SELECT type FROM Character WHERE name=?;', (playerID,))
@@ -215,12 +227,12 @@ class BackendAPI():
         self.connection.commit() 
 
     def add_to_team_stats(self):
-        self.backend.cursor.execute('INSERT INTO TeamStats')
-        self.backend.connection.commit() 
+        self.cursor.execute('INSERT INTO TeamStats (overall, wins, losses, ties) VALUES (?,?,?,?)', (0,0,0,0))
+        self.connection.commit() 
 
     # int id of the last team added
     def get_newest_team_id(self):
-        self.backend.cursor.execute('SELECT id FROM TeamStats;')
+        self.cursor.execute('SELECT id FROM TeamStats;')
         results = self.cursor.fetchall()
         team_id = len(results)
 
@@ -283,8 +295,11 @@ class BackendAPI():
         self.connection.commit()
 
     def update_playoff_series(self, id, winner, amount):
-        self.cursor.execute('UPDATE PlayoffSeries SET ?=? WHERE id=?;', (winner, amount, id))
-        self.connection.commit()  
+        # Safety check
+        team_names = list(TEAM_NAME_MAPPING.values())
+        if (winner in team_names):
+            self.cursor.execute(f'UPDATE PlayoffSeries SET {winner}=? WHERE id=?;', (amount, id))
+            self.connection.commit()  
 
     def end_playoff_series(self, winnerID):
         self.backend.cursor.execute("SELECT id FROM PlayoffSeries WHERE highSeed = ? OR lowSeed = ?;", (winnerID, winnerID))

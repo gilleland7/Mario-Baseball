@@ -134,19 +134,18 @@ class MiddlewareAPI():
         return results
     
     def add_team(self, team, division, isPlayer):
-        div_id = self.backend.get_division_id(division)[0]
-        stadium = STADIUM_MAPPING[team.name]
-        stadium_id = self.backend.get_stadium_id(stadium)[0]
-        logo = stadium + " logo.png"
+        div_id = division.name
+        stadium_id = STADIUM_MAPPING[team.name]
+        logo = stadium_id + " logo.png"
 
         self.backend.add_to_team_stats()
 
         team_id = self.backend.get_newest_team_id()
 
-        self.backend.add_team(team, team_id, stadium_id, div_id, logo, isPlayer)
+        self.backend.add_team(team.name, team_id, stadium_id, div_id, logo, isPlayer)
 
     def add_player_to_team(self, team, player):
-        char_id = self.backend.get_player_by_name(player.name, player.type)[0]
+        char_id = self.backend.get_player_by_name(player.name, player.type)[0][0]
 
         team_full = self.backend.get_team(team.name)[0]
         charNumSt = "char"
@@ -174,7 +173,7 @@ class MiddlewareAPI():
 
     # bool
     def check_if_player_is_on_team(self, character):
-        char_id = self.backend.get_player_by_name(character.name, character.type)[0]
+        char_id = self.backend.get_player_by_name(character.name, character.type)[0][0]
         results = self.backend.check_if_player_is_on_any_team(char_id)
 
         onTeam = (len(results) > 0)
@@ -182,10 +181,10 @@ class MiddlewareAPI():
         return onTeam
     
     # id
-    def get_character_id(self,character):
+    def get_character_id(self, character):
         char_id = self.backend.get_player_by_name(character.name, character.type)[0]
 
-        return char_id
+        return char_id[0]
     
     def set_user_team(self, team):
         self.backend.set_user_team(team.name)
@@ -194,16 +193,16 @@ class MiddlewareAPI():
     def get_stadium(self, team):
         stadium = self.backend.get_stadium(team.name)[0]
 
-        return stadium
+        return stadium[0]
     
     # name
     def get_division(self, team):
         div = self.backend.get_division(team.name)[0]
 
-        return div
+        return div[0]
     
     def create_game(self, gameNum, home, away):
-        stadium = self.get_stadium(home.name)[0]
+        stadium = self.get_stadium(home)[0]
         self.backend.create_game(gameNum, stadium, home.name, away.name)
 
     #################################################
