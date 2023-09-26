@@ -334,7 +334,7 @@ class BackendAPI():
 
     # name, winner, season
     def get_awards(self, seasonYear):
-        self.cursor.execute('SELECT * FROM Awards WHERE season=?;', (seasonYear,))
+        self.cursor.execute('SELECT Awards.name, Character.name, Awards.season FROM Awards INNER JOIN Character ON Awards.Winner = Character.id WHERE Awards.season=?;', (seasonYear,))
         results = self.cursor.fetchall()
         return results
     
@@ -389,5 +389,11 @@ class BackendAPI():
     # year, champion, runnerUp, semiFinalsTeamOne, semiFinalsTeamTwo, currentGameNum
     def get_season(self, year):
         self.cursor.execute('SELECT * FROM Season WHERE year=?;', (year,))
+        results = self.cursor.fetchall()
+        return results
+    
+    # [year, champion, runnerUp, semiFinalsTeamOne, semiFinalsTeamTwo, currentGameNum]
+    def get_all_seasons(self):
+        self.cursor.execute('SELECT * FROM Season')
         results = self.cursor.fetchall()
         return results

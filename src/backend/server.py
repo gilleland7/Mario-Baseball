@@ -30,7 +30,9 @@ def get_time():
 
     g.setup(1, "Wario City", t2, t1, 5, 10)
 
-    ex = api.get_champion()
+    awards_dict = {ch:"Silver Slugger"}
+
+    ex = api.reset_season()
 
     # Returning to show in reactjs
     return {

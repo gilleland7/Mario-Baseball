@@ -11,8 +11,6 @@ sys.path.append(parent)
 from Strings import *
 from Shared.Team import Team
 
-WILDCARD = "*"
-
 class MiddlewareAPI():
     def __init__(self):
         self.backend = BackendAPI()
@@ -375,11 +373,13 @@ class MiddlewareAPI():
 
     # name, winner, season
     def get_award_winners(self):
-        year = self.get_year()[0][0]
-        self.backend.get_awards(year)
+        year = self.get_year()
+        results = self.backend.get_awards(year)
+        
+        return results
 
     def set_awards(self, winners_awards_dict):
-        year = self.get_year()[0][0]
+        year = self.get_year()
 
         for winner in winners_awards_dict:
             id = self.backend.get_player_by_name(winner.name, winner.type)[0][0]
@@ -402,5 +402,5 @@ class MiddlewareAPI():
 
     # year, champion, runnerUp, semiFinalsTeamOne, semiFinalsTeamTwo, currentGameNum
     def get_seasons(self):
-        seasons = self.backend.get_season(WILDCARD)
+        seasons = self.backend.get_all_seasons()
         return seasons
