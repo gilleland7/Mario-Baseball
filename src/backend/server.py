@@ -30,7 +30,7 @@ def get_time():
 
     g.setup(1, "Wario City", t2, t1, 5, 10)
 
-    ex = api.create_game(1, t1, t2)
+    ex = api.get_champion()
 
     # Returning to show in reactjs
     return {

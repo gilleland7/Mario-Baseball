@@ -185,6 +185,7 @@ class BackendAPI():
     def create_game(self, gameNum, stadium, homeTeam, awayTeam):
         self.cursor.execute('INSERT INTO Game (gameNumber, stadium, homeTeam, awayTeam) VALUES (?,?,?,?)', (gameNum, stadium, homeTeam, awayTeam))
         self.connection.commit() 
+        return self.cursor.lastrowid
 
     # string name
     def get_stadium(self, name):
@@ -196,6 +197,7 @@ class BackendAPI():
     def get_division(self, name):
         self.cursor.execute('SELECT division FROM Team WHERE name=?;', (name,))
         results = self.cursor.fetchall()
+        print(results)
         return results
     
     def add_player_to_team(self, teamName, characterID, charNumSt):
@@ -270,7 +272,7 @@ class BackendAPI():
     
     # id, round, highSeed, lowSeed, highSeedWins, lowSeedWins, gameOne..., winner
     def get_playoff_series_by_teams(self, teamOne, teamTwo):
-        self.backend.cursor.execute("SELECT * FROM PlayoffSeries WHERE highSeed = ? AND lowSeed = ? OR highSeed = ? OR lowSeed = ?;", (teamOne, teamTwo, teamTwo, teamOne))
+        self.cursor.execute("SELECT * FROM PlayoffSeries WHERE (highSeed = ? AND lowSeed = ?) OR (highSeed = ? AND lowSeed = ?);", (teamOne, teamTwo, teamTwo, teamOne))
         results = self.cursor.fetchall()
 
         return results
@@ -285,25 +287,24 @@ class BackendAPI():
     
     # int id[]
     def get_division_rankings(self, div):
-        self.backend.cursor.execute("SELECT id FROM TeamStats INNER JOIN Team ON TeamStats.id=Team.name WHERE division = ? ORDER BY wins DESC LIMIT 2;", (div,))
+        self.cursor.execute("SELECT Team.name FROM Team INNER JOIN TeamStats ON TeamStats.id=Team.stats WHERE Team.division = ? ORDER BY TeamStats.wins DESC LIMIT 2;", (div,))
         results = self.cursor.fetchall()
-
         return results
 
     def create_playoffs(self, roundOneDivOneID, roundOneDivTwoID):
-        self.cursor.execute('INSERT INTO Playoffs (round, roundOneDivisionOne, roundOneDivisionTwo) VALUES (?,?);', (roundOneDivOneID, roundOneDivTwoID))
+        self.cursor.execute('INSERT INTO Playoffs (overallRound, roundOneDivisionOne, roundOneDivisionTwo) VALUES (?,?,?);', (1, roundOneDivOneID, roundOneDivTwoID))
         self.connection.commit()
 
     def update_playoff_series(self, id, winner, amount):
         # Safety check
-        team_names = list(TEAM_NAME_MAPPING.values())
-        if (winner in team_names):
-            self.cursor.execute(f'UPDATE PlayoffSeries SET {winner}=? WHERE id=?;', (amount, id))
+        if (winner == "highSeed" or wins == "lowSeed"):
+            wins = winner + "wins"
+            self.cursor.execute(f'UPDATE PlayoffSeries SET {wins}=? WHERE id=?;', (amount, id))
             self.connection.commit()  
 
     def end_playoff_series(self, winnerID):
-        self.backend.cursor.execute("SELECT id FROM PlayoffSeries WHERE highSeed = ? OR lowSeed = ?;", (winnerID, winnerID))
-        series_id = self.backend.cursor.fetchall()[0][0]
+        self.cursor.execute("SELECT id FROM PlayoffSeries WHERE highSeed = ? OR lowSeed = ?;", (winnerID, winnerID))
+        series_id = self.cursor.fetchall()[0][0]
 
         self.cursor.execute('UPDATE PlayoffSeries SET winner=? WHERE id=?;', (winnerID, series_id))
         self.connection.commit()  
@@ -312,7 +313,6 @@ class BackendAPI():
     def select_wins(self, teamStatsID):
         self.cursor.execute('SELECT wins FROM TeamStats WHERE id = ?;', (teamStatsID,))
         results = self.cursor.fetchall()
-
         return results
 
     # Team ID
@@ -323,7 +323,7 @@ class BackendAPI():
 
     # String Team, Team 
     def get_playoff_winners_and_losers(self, team):
-        self.backend.cursor.execute("SELECT highSeed, lowSeed FROM PlayoffSeries WHERE winner = ? ORDER BY round DESC;", (team,))
+        self.cursor.execute("SELECT highSeed, lowSeed FROM PlayoffSeries WHERE winner = ? ORDER BY round DESC;", (team,))
         results = self.cursor.fetchall()
 
         return results
@@ -379,7 +379,7 @@ class BackendAPI():
         self.connection.commit()
     
     def set_previous_season(self, champ, runnerUp, divOneLoser, divTwoLoser, year):
-        self.cursor.execute('INSERT INTO Season (year, champion, runnerUp, semiFinalsTeamOne, semiFinalsTeamTwo) VALUES (?,?,?,?,?);', (year, champ, runnerUp, divOneLoser, divTwoLoser))
+        self.cursor.execute('UPDATE Season SET champion = ?, runnerUp = ?, semiFinalsTeamOne = ?, semiFinalsTeamTwo = ? WHERE year = ?;', (champ, runnerUp, divOneLoser, divTwoLoser, year))
         self.connection.commit()
     
     #################################################

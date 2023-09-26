@@ -9,6 +9,7 @@ parent = os.path.dirname(current)
 sys.path.append(parent)
 
 from Strings import *
+from Shared.Team import Team
 
 WILDCARD = "*"
 
@@ -202,36 +203,30 @@ class MiddlewareAPI():
         return div[0]
     
     def create_game(self, gameNum, home, away):
-        stadium = self.get_stadium(home)[0]
-        self.backend.create_game(gameNum, stadium, home.name, away.name)
-
+        stadium = self.get_stadium(home)
+        id = self.backend.create_game(gameNum, stadium, home.name, away.name)
+        return id
+    
     #################################################
     ############# Playoffs Screen #############
     #################################################
 
     # round
     def get_round(self):
-        results = self.backend.get_round()[0]
+        results = self.backend.get_round()[0][0]
         return results
     
     # series_id
     def create_series(self, lowerSeed, higherSeed, round):
-        self.create_game(1, higherSeed, lowerSeed)
-        gameOne = self.cursor.lastrowid
-        self.create_game(2, higherSeed, lowerSeed)
-        gameTwo = self.cursor.lastrowid
-        self.create_game(3, lowerSeed, higherSeed)
-        gameThree = self.cursor.lastrowid
-        self.create_game(4, lowerSeed, higherSeed)
-        gameFour = self.cursor.lastrowid
-        self.create_game(5, lowerSeed, higherSeed)
-        gameFive = self.cursor.lastrowid
-        self.create_game(6, higherSeed, lowerSeed)
-        gameSix = self.cursor.lastrowid
-        self.create_game(7, higherSeed, lowerSeed)
-        gameSeven = self.cursor.lastrowid
+        gameOne = self.create_game(1, higherSeed, lowerSeed)
+        gameTwo = self.create_game(2, higherSeed, lowerSeed)
+        gameThree = self.create_game(3, lowerSeed, higherSeed)
+        gameFour = self.create_game(4, lowerSeed, higherSeed)
+        gameFive = self.create_game(5, lowerSeed, higherSeed)
+        gameSix = self.create_game(6, higherSeed, lowerSeed)
+        gameSeven = self.create_game(7, higherSeed, lowerSeed)
         
-        series_id = self.backend.create_playoff_series(round, higherSeed, lowerSeed, gameOne, gameTwo, gameThree, gameFour, gameFive, gameSix, gameSeven)
+        series_id = self.backend.create_playoff_series(round, higherSeed.name, lowerSeed.name, gameOne, gameTwo, gameThree, gameFour, gameFive, gameSix, gameSeven)
         return series_id
 
     def advance_round(self):
@@ -249,7 +244,7 @@ class MiddlewareAPI():
         # Get seeding
         teamOne = self.backend.get_team(seriesOneWinner)[0]
         teamOneStatsID = teamOne[10]
-        teamOneWins = self.backend.select_wins(teamOneStatsID)[0]
+        teamOneWins = self.backend.select_wins(teamOneStatsID)[0][0]
 
         teamTwo = self.backend.get_team(seriesTwoWinner)[0]
         teamTwoStatsID = teamTwo[10]
@@ -275,9 +270,13 @@ class MiddlewareAPI():
                 lowerSeed = teamOne
 
         # Create Series
-        self.create_series(higherSeed, lowerSeed, self.championship_round)
-        seriesID = self.cursor.lastrowid
-        
+        highSeedTeam = Team()
+        lowSeedTeam = Team()
+        highSeedTeam.name = higherSeed[0]
+        lowSeedTeam.name = lowerSeed[0]
+
+        seriesID = self.create_series(highSeedTeam, lowSeedTeam, self.championship_round)
+
         self.backend.advance_round(self.championship_round, seriesID)
 
     def update_series(self, winner, loser):
@@ -285,78 +284,89 @@ class MiddlewareAPI():
     
         series_id = series[0]
         highSeed = series[2]
-        lowSeed = series[3]
+ 
         highSeedWins = series[4]
         lowSeedWins = series[5]
 
-        team = lowSeed
-        wins = lowSeedWins
-        if (winner.upper() == highSeed.upper()):
-            team = highSeed
-            wins = highSeedWins
+        team = 'lowSeed'
+        wins = lowSeedWins + 1
+        if (winner.name.upper() == highSeed.upper()):
+            team = 'highSeed'
+            wins = highSeedWins + 1
 
-        # Need series ID, team seeds, team seed wins
+        # Need series ID, highSeed or lowSeed, team seed wins
         self.backend.update_playoff_series(series_id, team, wins)
 
     def end_series(self, winner):
-        self.backend.end_playoff_series(winner)
+        self.backend.end_playoff_series(winner.name)
 
     def create_playoffs(self):
         # Division One
-        div_one = self.backend.get_division(MUSHROOM_DIVISION)[0][0]
+        div_one = MUSHROOM_DIVISION
 
-        div_one_teams = self.backend.get_division_rankings(div_one)[0]
-        
-        div_one_id = self.create_series(div_one_teams[1], div_one_teams[0], 1)    
+        div_one_teams = self.backend.get_division_rankings(div_one)
+        div_one_lower = Team()
+        div_one_lower.name = div_one_teams[1][0]
+
+        div_one_higher = Team()
+        div_one_higher.name = div_one_teams[0][0]
+
+        div_one_id = self.create_series(div_one_lower, div_one_higher, 1)    
 
         # Division Two
-        div_two = self.backend.get_division(FLOWER_DIVISION)[0][0]   
+        div_two = FLOWER_DIVISION
 
-        div_two_teams = self.backend.get_division_rankings(div_two)[0]
+        div_two_teams = self.backend.get_division_rankings(div_two)
 
-        div_two_id = self.create_series(div_two_teams[1], div_two_teams[0], 1)
+        div_two_lower = Team()
+        div_two_lower.name = div_two_teams[1][0]
+
+        div_two_higher = Team()
+        div_two_higher.name = div_two_teams[0][0]
+
+        div_two_id = self.create_series(div_two_lower, div_two_higher, 1)
 
         self.backend.create_playoffs(div_one_id, div_two_id)
 
     def end_playoffs(self, champion):
-        self.backend.end_playoffs(champion)
+        self.backend.end_playoffs(champion.name)
+      
+        results = self.backend.get_playoff_winners_and_losers(champion.name)
         
-        results = self.backend.get_playoff_winners_and_losers(champion)
-
         runner_up = results[0][0]
-        if (runner_up == champion):
+        if (runner_up == champion.name):
             runner_up = results[0][1]
  
-        div_one_semi = results[0][0]
-        if (div_one_semi == champion):
-            div_one_semi = results[0][1]
+        div_one_semi = results[1][0]
+        if (div_one_semi == champion.name):
+            div_one_semi = results[1][1]
 
         results = self.backend.get_playoff_winners_and_losers(runner_up)
-
+     
         div_two_semi = results[0][0]
         if (div_two_semi == runner_up):
             div_two_semi = results[0][1]
-        
+ 
         franchise = self.backend.get_franchise()
         year = franchise[0][3]
 
-        self.backend.set_previous_season(champion, runner_up, div_one_semi, div_two_semi, year)
+        self.backend.set_previous_season(champion.name, runner_up, div_one_semi, div_two_semi, year)
 
     # id, overallRound, roundOneDivisionOne Series ID,  roundOneDivisionTwo Series ID, Championship Series ID, Champion Team ID
     def get_playoffs(self):
-        results = self.backend.get_playoffs()
+        results = self.backend.get_playoffs()[0]
         return results
     
     # id, round, highSeed, lowSeed, highSeedWins, lowSeedWins, gameOne..., winner
     def get_playoff_series(self, teamOne, teamTwo):
-        results = self.backend.get_playoff_series_by_teams(teamOne, teamTwo)
+        results = self.backend.get_playoff_series_by_teams(teamOne.name, teamTwo.name)[0]
         return results
 
     # name, CharOneID, ... CharNineID, TeamStatsID, Stadium, Division, PlayerTeam (int), logo
     def get_champion(self):
-        champion = self.backend.get_champion()
-
-        team = self.backend.get_team(champion)
+        champion = self.backend.get_champion()[0][0]
+ 
+        team = self.backend.get_team(champion)[0]
         return team
     
     #################################################
