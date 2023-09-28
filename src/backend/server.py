@@ -32,7 +32,7 @@ def get_time():
 
     awards_dict = {ch:"Silver Slugger"}
 
-    ex = api.reset_season()
+    ex = api.get_all_character_names()
 
     # Returning to show in reactjs
     return {
