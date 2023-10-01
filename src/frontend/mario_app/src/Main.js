@@ -50,10 +50,11 @@ export default App;
 */
 
 import React from 'react';
-import './App.css';
+import './Main.css';
 import BattingStatsTable from './Table/BattingStatsTable';
+import StandingsTable from './Table/StandingsTable';
 
-function App() {
+function Main() {
     return (
         <div class="body">
             <nav class="navbar background">
@@ -73,8 +74,15 @@ function App() {
                         <p class="text-small">
                             Last Game: <br/>
                             &nbsp; Mario 6 <br/>
-                            &nbsp; Luigi 7
+                            &nbsp; Luigi 7 &gt;
                         </p>
+                        <div class="previous">
+                            <button>Previous Season</button>
+                        </div>
+                        <div class="info">
+                            <div class="year">2016</div>
+                            <div class="version">v1.4</div>
+                        </div>
                     </div>
                     <div class="secondHalf">
                         <div class="stats-container">
@@ -90,15 +98,18 @@ function App() {
                             </div>
                         </div>
                         <BattingStatsTable/>
+                        <div class="standings">
+                            <div class="division division-border">
+                                <StandingsTable/>
+                            </div>
+                            <div class="division">
+                            <StandingsTable/>
+                            </div>
+                        </div>
                     </div>
             </section>
-            <footer className="footer">
-                <p className="text-footer">
-                    Copyright ©-All rights are reserved
-                </p>
-            </footer>
         </div>
     )
 }
   
-export default App
+export default Main

@@ -5,6 +5,13 @@ import './StatsTable.css';
 const data = [
     { Player: "Luigi", PA: 23, AB: 50, '3B': 1, WAR: 10.1},
     { Player: "Mario", PA: 3, AB: 1, '2B': 1, SLG: '.156%', WAR: 11},
+    { Player: "Bowser", PA: 3, AB: 1, '2B': 1, SLG: '.156%', WAR: 11},
+    { Player: "Peach", PA: 3, AB: 1, '2B': 1, SLG: '.156%', WAR: 11},
+    { Player: "Birdo", PA: 3, AB: 1, '2B': 1, SLG: '.156%', WAR: 11},
+    { Player: "Yoshi", PA: 3, AB: 1, '2B': 1, SLG: '.156%', WAR: 11},
+    { Player: "Wario", PA: 3, AB: 1, '2B': 1, SLG: '.156%', WAR: 11},
+    { Player: "Diddy Kong", PA: 3, AB: 1, '2B': 1, SLG: '.156%', WAR: 11},
+    { Player: "King K. Ruel", PA: 3, AB: 1, '2B': 1, SLG: '.156%', WAR: 11},
 ]
 
 function BattingStatsTable() {
