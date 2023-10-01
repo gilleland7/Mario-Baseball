@@ -51,6 +51,7 @@ export default App;
 
 import React from 'react';
 import './App.css';
+import BattingStatsTable from './Table/BattingStatsTable';
 
 function App() {
     return (
@@ -88,18 +89,7 @@ function App() {
                                 </button>
                             </div>
                         </div>
-                        <p class="text-small">
-                            JavaScript is the world most popular 
-                            lightweight, interpreted compiled 
-                            programming language. It is also 
-                            known as scripting  language for
-                            web pages. It is well-known for 
-                            the development of web page many 
-                            non-browser environments also use
-                            it. JavaScript can be used for 
-                            Client-side developments as well 
-                            as Server-side developments.
-                        </p>
+                        <BattingStatsTable/>
                     </div>
             </section>
             <footer className="footer">

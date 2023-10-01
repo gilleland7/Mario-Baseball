@@ -1,0 +1,34 @@
+.StatsTable {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+}
+ 
+table {
+    border: 2px solid forestgreen;
+    width: 800px;
+    height: 200px;
+    background-color: blue;
+}
+ 
+th {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    background-color: skyblue;
+}
+ 
+td {
+    text-align: center;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.rt-tr-group{
+    background-color :blueviolet;
+  }
+
+.rt-tr-group:nth-of-type(even){
+    background-color: darkcyan;
+}
