@@ -8,8 +8,8 @@
  
 table {
     border: 2px solid forestgreen;
-    width: 800px;
-    height: 200px;
+    width: 90%;
+    height: 30%;
     background-color: blue;
     padding-top: 1%;
     table-layout: auto;
