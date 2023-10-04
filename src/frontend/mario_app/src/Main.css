@@ -8,10 +8,8 @@ button {
 }
 
 .navbar {
-  display: flex;
   align-items: left;
   justify-content: left;
-  position: sticky;
   top: 0;
 }
 
@@ -98,7 +96,7 @@ button {
 .previous {
   display: flex;
   flex: 1;
-  padding-top: 87.75%;
+  padding-top: 135.5%;
   justify-content: center;
   background-color: pink;
 }
@@ -124,7 +122,7 @@ button {
 .standings {
   display: flex;
   flex: 1;
-  padding-top: 4%;
+  padding-top: 15%;
   background-color: greenyellow;
 }
 

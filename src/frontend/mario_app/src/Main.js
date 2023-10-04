@@ -58,15 +58,15 @@ function Main() {
     return (
         <div class="body">
             <nav class="navbar background">
-                <ul class="nav-list">
+                <div class="nav-list">
                     <div class="logo">
                         <img src=
 "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210420155809/gfg-new-logo.png" />
                     </div>
                     <li><a>Luigi Knights</a></li>
-                </ul>
+                </div>
             </nav>
-            <section class="container">
+            <div class="container">
                     <div class="firstHalf">
                         <button class="text-big">
                             Play Game @ Bowser
@@ -77,7 +77,7 @@ function Main() {
                             &nbsp; Luigi 7 &gt;
                         </p>
                         <div class="previous">
-                            <button>Previous Season</button>
+                            <button>Previous Seasons</button>
                         </div>
                         <div class="info">
                             <div class="year">2016</div>
@@ -103,11 +103,23 @@ function Main() {
                                 <StandingsTable/>
                             </div>
                             <div class="division">
-                            <StandingsTable/>
+                                <StandingsTable/>
                             </div>
                         </div>
                     </div>
-            </section>
+            </div>
+            <nav class="navbar background">
+                <ul class="nav-list">
+                    <div class="logo">
+                        <img src=
+                        "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210420155809/gfg-new-logo.png" />
+                    </div>
+                    <div class="logo">
+                        <img src=
+                        "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210420155809/gfg-new-logo.png" />
+                    </div>
+                </ul>
+            </nav>
         </div>
     )
 }
