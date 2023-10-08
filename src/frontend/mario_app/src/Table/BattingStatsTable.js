@@ -41,7 +41,7 @@ function BattingStatsTable() {
                 </tr>
                 {data.map((val, key) => {
                     return (
-                        <tr key={key} class="StatsRow rt-tr-group">
+                        <tr key={key} class="StatsRow stat-tr-group">
                             <td class="StatsData">{val.Player}</td>
                             <td class="StatsData">{val.PA}</td>
                             <td class="StatsData">{val.AB}</td>

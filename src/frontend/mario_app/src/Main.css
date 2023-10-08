@@ -10,6 +10,7 @@
 
 body {
   background-color: var(--bg);
+  height: 100%;
 }
 
 button {
@@ -97,20 +98,18 @@ button {
   width: 100%;
 }
 
+.text-small {
+  font-size: 16px;
+  text-align: center;
+  padding-top: 5%;
+}
+
 .team {
   flex:1;
 }
 
 .stats {
   flex:3;
-}
-
-.text-small {
-  font-size: 16px;
-}
-
-.body {
-  height: 100%;
 }
 
 .stats-container {
@@ -125,10 +124,19 @@ button {
   background-color: var(--bg);
 }
 
+.lastGame {
+  text-align: justify;
+  padding-left: 42%;
+}
+
+.bottomTeam {
+  font-weight: bold;
+}
+
 .previous {
   display: flex;
   flex: 1;
-  padding-top: 135.5%;
+  padding-top: 164.5%;
   justify-content: center;
   background-color: var(--bg);
 }
@@ -151,10 +159,15 @@ button {
   background-color: var(--bg);
 }
 
+.standingsText {
+  text-align: center;
+  font-size: 20px;
+  padding-top: 22%;
+}
+
 .standings {
   display: flex;
   flex: 1;
-  padding-top: 22.10%;
   background-color: var(--bg);
 }
 
@@ -166,6 +179,7 @@ button {
 }
 
 .division-border {
+  height: 5%;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }

@@ -4,20 +4,18 @@
     display: flex;
     justify-content: center;
     align-items: center;  
+    padding-top: 5%;
 }
  
 .StatsTable {
-    border: 2px solid forestgreen;
+    border: 2px solid black;
     table-layout: auto;
-    background-color: orange;
-    padding-top: 1%;
     border-collapse: collapse;
 }
  
 .StatsHeader {
     border-bottom: 1px solid black;
     border-right: 1px solid black;
-    background-color: skyblue;
     max-width: 100px;
     min-width: 60px;
 }
@@ -28,10 +26,10 @@
     border-right: 1px solid black;
 }
 
-.rt-tr-group{
-    background-color :red;
+.stat-tr-group{
+    background-color :#E9EBF5 ;
   }
 
-.rt-tr-group:nth-of-type(even){
-    background-color: darkcyan;
+.stat-tr-group:nth-of-type(even){
+    background-color: #CFD5EA;
 }

@@ -77,8 +77,14 @@ function Main() {
                         </button>
                         <p class="text-small">
                             Last Game: <br/>
-                            &nbsp; Mario 6 <br/>
-                            &nbsp; Luigi 7 &gt;
+                            <div class = "lastGame">
+                                <div class="topTeam"> 
+                                    &nbsp; Mario 6 <br/>
+                                </div>
+                                <div class="bottomTeam">
+                                    &nbsp; Luigi 7 &lt;
+                                </div>
+                            </div>
                         </p>
                         <div class="previous">
                             <button>Previous Seasons</button>
@@ -102,6 +108,7 @@ function Main() {
                             </div>
                         </div>
                         <BattingStatsTable/>
+                        <div class="standingsText"> Standings </div>
                         <div class="standings">
                             <div class="division division-border division-border-right">
                                 <StandingsTable/>
