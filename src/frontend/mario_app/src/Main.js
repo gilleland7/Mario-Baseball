@@ -54,14 +54,18 @@ import './Main.css';
 import BattingStatsTable from './Table/BattingStatsTable';
 import StandingsTable from './Table/StandingsTable';
 
+import teamLogo from "./Images/Teams/Luigi Knights logo.png"
+import mzoneLogo from "./Images/lVl Logo.png"
+import superSluggersLogo from "./Images/Mario Super Sluggers Logo.png"
+
 function Main() {
+    console.log(teamLogo);
     return (
         <div class="body">
             <nav class="navbar background">
                 <div class="nav-list">
                     <div class="logo">
-                        <img src=
-"https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210420155809/gfg-new-logo.png" />
+                        <img src={teamLogo} alt="Team Logo"/>
                     </div>
                     <li><a>Luigi Knights</a></li>
                 </div>
@@ -99,10 +103,10 @@ function Main() {
                         </div>
                         <BattingStatsTable/>
                         <div class="standings">
-                            <div class="division division-border">
+                            <div class="division division-border division-border-right">
                                 <StandingsTable/>
                             </div>
-                            <div class="division">
+                            <div class="division division-border">
                                 <StandingsTable/>
                             </div>
                         </div>
@@ -110,13 +114,11 @@ function Main() {
             </div>
             <nav class="navbar background">
                 <ul class="nav-list">
-                    <div class="logo">
-                        <img src=
-                        "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210420155809/gfg-new-logo.png" />
+                    <div class="bottomLogo">
+                        <img src={mzoneLogo} alt="mzone"/>
                     </div>
-                    <div class="logo">
-                        <img src=
-                        "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210420155809/gfg-new-logo.png" />
+                    <div class="bottomLogo bottomRight">
+                        <img src={superSluggersLogo} alt="Mario Super Sluggers"/>
                     </div>
                 </ul>
             </nav>
