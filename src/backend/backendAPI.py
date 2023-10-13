@@ -116,7 +116,7 @@ class BackendAPI():
         self.cursor.execute('SELECT * FROM Game WHERE gameNumber = ? AND (homeTeam = ? OR awayTeam = ?);', (nextGameNum, userTeamID, userTeamID))
         results = self.cursor.fetchall()
         return results
-    
+
     # year
     def get_year(self):
         self.cursor.execute("SELECT Year FROM Season ORDER BY Year DESC LIMIT 1;")   

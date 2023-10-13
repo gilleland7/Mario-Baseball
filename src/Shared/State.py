@@ -1,3 +1,7 @@
 from enum import Enum
 
-State = Enum("PRESEASON", "INSEASON", "PLAYOFFS")
+class State(Enum):
+    PRESEASON = 0
+    INSEASON = 1
+    PLAYOFFS = 2
+    ENDOFSEASON = 3
