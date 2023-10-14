@@ -3,7 +3,8 @@ import InSeason from "./InSeason";
  
 function Main() {
     const [data, setdata] = useState({
-        state: 0
+        state: 0,
+        teamName: ""
     });
  
     // Using useEffect for single rendering
@@ -14,13 +15,15 @@ function Main() {
             res.json().then((data) => {
                 // Setting a data from api
                 setdata({
-                    state : data.state
+                    state : data.state,
+                    teamName: data.teamName
                 });
             })
         );
     }, []);   
 
     function renderContent() {
+        console.log(data.teamName)
         if (data.state === 0){
             console.log("preseason");
         } else if (data.state === 1){

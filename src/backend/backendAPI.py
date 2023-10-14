@@ -63,13 +63,13 @@ class BackendAPI():
         results = self.cursor.fetchall()
         return results
 
-    # id, IP, GamesPitched, BB, H, R, ER, HR, ERA< W, L, S, HD, WHIP, K
+    # id, IP, GamesPitched, BB, H, R, ER, HR, ERA, W, L, S, HD, WHIP, K
     def get_pitcher_stats(self, id):
         self.cursor.execute('SELECT * FROM PitchingStats WHERE id = ?;', (id,))
         results = self.cursor.fetchall()
         return results
     
-    # id, IP, GamesPitched, BB, H, R, ER, HR, ERA, W, L, S, HD, WHIP, K
+    # id, nicePlays, putOuts, errors
     def get_defensive_stats(self, id):
         self.cursor.execute('SELECT * FROM DefensiveStats WHERE id = ?;', (id,))
         results = self.cursor.fetchall()
@@ -148,12 +148,18 @@ class BackendAPI():
         self.connection.commit()
 
     # stats ID
-    def get_team_stats(self, name):
+    def get_team_stats_id(self, name):
         self.cursor.execute("SELECT stats FROM Team WHERE name = ?;", (name,))   
         results = self.cursor.fetchall()
     
         return results
     
+    # ID, overall, wins, losses, ties
+    def get_team_stats(self, id):
+        self.cursor.execute("SELECT * FROM TeamStats WHERE id = ?;", (id,))   
+        results = self.cursor.fetchall()
+        return results
+
     # game ID
     def get_game(self, gameNumber, homeTeam, awayTeam):
         self.cursor.execute("SELECT id FROM Game WHERE gameNumber = ? AND homeTeam = ? AND awayTeam = ?;", (gameNumber, homeTeam, awayTeam))   
@@ -197,7 +203,6 @@ class BackendAPI():
     def get_division(self, name):
         self.cursor.execute('SELECT division FROM Team WHERE name=?;', (name,))
         results = self.cursor.fetchall()
-        print(results)
         return results
     
     def add_player_to_team(self, teamName, characterID, charNumSt):

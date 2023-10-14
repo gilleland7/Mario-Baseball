@@ -4,6 +4,7 @@ from backendAPI import BackendAPI
 from middlewareAPI import MiddlewareAPI
 
 from Shared.State import State
+from Shared.Team import Team
 
 # Initializing flask app
 app = Flask(__name__)
@@ -14,11 +15,15 @@ def get_time():
     api = MiddlewareAPI()
     franchiseState = api.get_franchise()[1]
     state = State(franchiseState)
-    print(state.value)
+   
+    userTeam = api.get_user_team()
+    team = Team()
+    team.setup(userTeam, api)
 
     # Returning to show in reactjs
     return {
-        'state':state.value
+        'state':state.value,
+        'teamName':team.name
         }
      
 # Running app

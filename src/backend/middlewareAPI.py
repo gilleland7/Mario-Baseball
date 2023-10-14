@@ -29,12 +29,12 @@ class MiddlewareAPI():
     # returns name, CharOneID, ... CharNineID, TeamStatsID, Stadium, Division, PlayerTeam (int), logo   
     def get_user_team(self):
        results = self.backend.get_player_team()
-       return results[0][0]
+       return results[0]
     
     # returns name, CharOneID, ... CharNineID, TeamStatsID, Stadium, Division, PlayerTeam (int), logo   
     def get_team_by_name(self, name):
         results = self.backend.get_team(name)
-        return results[0][0]
+        return results[0]
 
      # returns [name, CharOneID, ... CharNineID, TeamStatsID, Stadium, Division, PlayerTeam (int), logo]   
     def get_teams_by_division(self, div):
@@ -90,6 +90,34 @@ class MiddlewareAPI():
     def get_year(self):
         results = self.backend.get_year()
         return results[0][0] 
+    
+    # returns id, overall, wins, losses, ties
+    def get_team_stats(self, team):
+        team = self.get_team_by_name(team.name)
+        statsID = team[10]
+
+        results = self.backend.get_team_stats(statsID)[0]
+        return results     
+    
+    # returns id, name, type, isCaptain, bat, pitch, field, run, overall, png, PlayerStats ID 
+    def get_character(self, id):
+        results = self.backend.get_player_by_id(id)[0]
+        return results
+    
+    # returns id, WAR, battingStats[id, AB, BA, BB, HBP, K, S, D, T, HR, SAC, RBI, R, OBP, SLG, SB, CS], defensiveStats[id, nicePlays, putOuts, errors],
+    #  pitchingStats[id, IP, GamesPitched, BB, H, R, ER, HR, ERA< W, L, S, HD, WHIP, K]
+    def get_player_stats(self, id):
+        results = self.backend.get_player_stats(id)[0]
+
+        batter = self.backend.get_batter_stats(results[2])[0]
+        defender = self.backend.get_defensive_stats(results[3])[0]
+        pitcher = self.backend.get_pitcher_stats(results[4])[0]  
+        return results, batter, defender, pitcher      
+    
+    #[[id, char1, char2, type]]
+    def get_chemistry(self, character):
+        results = self.backend.get_chemistry(character.name, character.type)
+        return results
 
     #################################################
     ############# Play Game Screen #############
@@ -112,7 +140,7 @@ class MiddlewareAPI():
         self.backend.set_batter_stats(stats_id, character.stats)
 
     def update_team_stats(self, team):
-        results = self.backend.get_team_stats(team.name)
+        results = self.backend.get_team_stats_id(team.name)
         id = results[0][0]
 
         self.backend.set_team_stats(team.stats, id)
