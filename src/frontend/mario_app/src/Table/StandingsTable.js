@@ -13,24 +13,26 @@ const division = "Mushroom";
 
 function BattingStatsTable() {
     return (
-        <div class="StandingsTableClass">
-            <table class="StandingsTable">
-                <tr class="StandingsRow">
-                    <th class="StandingsHeader">{division}</th>
-                    <th class="StandingsHeader">W</th>
-                    <th class="StandingsHeader">L</th>
-                    <th class="StandingsHeader">GB</th>                
-                </tr>
+        <div className="StandingsTableClass">
+            <table className="StandingsTable">
+                <tbody>
+                    <tr className="StandingsRow">
+                        <th className="StandingsHeader">{division}</th>
+                        <th className="StandingsHeader">W</th>
+                        <th className="StandingsHeader">L</th>
+                        <th className="StandingsHeader">GB</th>                
+                    </tr>
                 {data.map((val, key) => {
                     return (
-                        <tr key={key} class="StandingsRow rt-tr-group">
-                            <td class="StandingsData">{val.Team}</td>
-                            <td class="StandingsData">{val.W}</td>
-                            <td class="StandingsData">{val.L}</td>
-                            <td class="StandingsData">{val.GB}</td>
+                        <tr key={key} className="StandingsRow rt-tr-group">
+                            <td className="StandingsData">{val.Team}</td>
+                            <td className="StandingsData">{val.W}</td>
+                            <td className="StandingsData">{val.L}</td>
+                            <td className="StandingsData">{val.GB}</td>
                         </tr>
                     )
                 })}
+                 </tbody>
             </table>
         </div>
     );

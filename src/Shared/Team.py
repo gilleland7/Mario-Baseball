@@ -104,4 +104,5 @@ class Team():
         self.playerTeam = (teamArr[13] == 1)
 
         self.logo = teamArr[14]
-
+        print(self.logo)
+        

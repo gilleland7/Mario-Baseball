@@ -3,31 +3,27 @@ import InSeason from "./InSeason";
  
 function Main() {
     const [data, setdata] = useState({
-        state: 0,
-        teamName: ""
+        state: 0
     });
  
     // Using useEffect for single rendering
     useEffect(() => {
         // Using fetch to fetch the api from
         // flask server it will be redirected to proxy
-        fetch("/data").then((res) =>
+        fetch("/state").then((res) =>
             res.json().then((data) => {
                 // Setting a data from api
                 setdata({
-                    state : data.state,
-                    teamName: data.teamName
+                    state : data.state
                 });
             })
         );
     }, []);   
 
     function renderContent() {
-        console.log(data.teamName)
         if (data.state === 0){
             console.log("preseason");
         } else if (data.state === 1){
-            console.log("season")
             return <InSeason/>;
         } else if (data.state === 2){
             console.log("playoffs")

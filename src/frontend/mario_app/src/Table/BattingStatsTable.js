@@ -16,54 +16,56 @@ const data = [
 
 function BattingStatsTable() {
     return (
-        <div class="StatsTableClass">
-            <table class="StatsTable">
-                <tr class="StatsRow">
-                    <th class="StatsHeader">Player</th>
-                    <th class="StatsHeader">PA</th>
-                    <th class="StatsHeader">AB</th>
-                    <th class="StatsHeader">H</th>
-                    <th class="StatsHeader">2B</th>
-                    <th class="StatsHeader">3B</th>
-                    <th class="StatsHeader">HR</th>
-                    <th class="StatsHeader">RBI</th>
-                    <th class="StatsHeader">SH</th>
-                    <th class="StatsHeader">SO</th>
-                    <th class="StatsHeader">BB</th>
-                    <th class="StatsHeader">HBP</th>
-                    <th class="StatsHeader">BA</th>
-                    <th class="StatsHeader">OBP</th>
-                    <th class="StatsHeader">SLG</th>
-                    <th class="StatsHeader">OPS</th>
-                    <th class="StatsHeader">SB</th>
-                    <th class="StatsHeader">CS</th>
-                    <th class="StatsHeader">WAR</th>
-                </tr>
+        <div className="StatsTableClass">
+            <table className="StatsTable">
+                <tbody>
+                    <tr className="StatsRow">
+                        <th className="StatsHeader">Player</th>
+                        <th className="StatsHeader">PA</th>
+                        <th className="StatsHeader">AB</th>
+                        <th className="StatsHeader">H</th>
+                        <th className="StatsHeader">2B</th>
+                        <th className="StatsHeader">3B</th>
+                        <th className="StatsHeader">HR</th>
+                        <th className="StatsHeader">RBI</th>
+                        <th className="StatsHeader">SH</th>
+                        <th className="StatsHeader">SO</th>
+                        <th className="StatsHeader">BB</th>
+                        <th className="StatsHeader">HBP</th>
+                        <th className="StatsHeader">BA</th>
+                        <th className="StatsHeader">OBP</th>
+                        <th className="StatsHeader">SLG</th>
+                        <th className="StatsHeader">OPS</th>
+                        <th className="StatsHeader">SB</th>
+                        <th className="StatsHeader">CS</th>
+                        <th className="StatsHeader">WAR</th>
+                    </tr>
                 {data.map((val, key) => {
                     return (
-                        <tr key={key} class="StatsRow stat-tr-group">
-                            <td class="StatsData">{val.Player}</td>
-                            <td class="StatsData">{val.PA}</td>
-                            <td class="StatsData">{val.AB}</td>
-                            <td class="StatsData">{val.H}</td>
-                            <td class="StatsData">{val['2B']}</td>
-                            <td class="StatsData">{val['3B']}</td>
-                            <td class="StatsData">{val.HR}</td>
-                            <td class="StatsData">{val.RBI}</td>
-                            <td class="StatsData">{val.SH}</td>
-                            <td class="StatsData">{val.SO}</td>
-                            <td class="StatsData">{val.BB}</td>
-                            <td class="StatsData">{val.HBP}</td>
-                            <td class="StatsData">{val.BA}</td>
-                            <td class="StatsData">{val.OBP}</td>
-                            <td class="StatsData">{val.SLG}</td>
-                            <td class="StatsData">{val.OPS}</td>
-                            <td class="StatsData">{val.SB}</td>
-                            <td class="StatsData">{val.CS}</td>
-                            <td class="StatsData">{val.WAR}</td>
+                        <tr key={key} className="StatsRow stat-tr-group">
+                            <td className="StatsData">{val.Player}</td>
+                            <td className="StatsData">{val.PA}</td>
+                            <td className="StatsData">{val.AB}</td>
+                            <td className="StatsData">{val.H}</td>
+                            <td className="StatsData">{val['2B']}</td>
+                            <td className="StatsData">{val['3B']}</td>
+                            <td className="StatsData">{val.HR}</td>
+                            <td className="StatsData">{val.RBI}</td>
+                            <td className="StatsData">{val.SH}</td>
+                            <td className="StatsData">{val.SO}</td>
+                            <td className="StatsData">{val.BB}</td>
+                            <td className="StatsData">{val.HBP}</td>
+                            <td className="StatsData">{val.BA}</td>
+                            <td className="StatsData">{val.OBP}</td>
+                            <td className="StatsData">{val.SLG}</td>
+                            <td className="StatsData">{val.OPS}</td>
+                            <td className="StatsData">{val.SB}</td>
+                            <td className="StatsData">{val.CS}</td>
+                            <td className="StatsData">{val.WAR}</td>
                         </tr>
                     )
                 })}
+                </tbody>
             </table>
         </div>
     );
