@@ -5,8 +5,12 @@ import StandingsTable from './Table/StandingsTable';
 
 function InSeason() {    
     const [userTeamData, setuserteamdata] = useState({
-        teamLogo: "",
-        teamName: ""
+        teamLogo: null,
+        teamName: null
+    });
+
+    const [teamsData, setteamsdata] = useState({
+        teams: null
     });
     
     const images = require.context('../public/Images/', true);
@@ -15,6 +19,11 @@ function InSeason() {
     const superSluggersLogo = images('./Mario Super Sluggers Logo.png');
 
     let teamLogo = "";
+    let teamName = "";
+    let teamsIndex = 0;
+
+    const statsLabels = ["Batting Stats", "Pitching Stats", "Defensive Stats"];
+    let statsIndex = 0; 
 
     // Using useEffect for single rendering
     useEffect(() => {
@@ -28,12 +37,32 @@ function InSeason() {
                     teamName: data.teamName
                 });               
             })
+        )
+
+        fetch("/teams").then((res) =>
+            res.json().then((data) => {
+                // Setting a data from api
+                setteamsdata({
+                    teams: data.teams
+                });               
+            })
         );
     }, []);   
 
+    function setUserTeamIndex(item, index){
+        if (item === userTeamData.teamName){
+            teamsIndex = index;
+        }
+    }
+
     function renderContent() {       
-        if (userTeamData.teamLogo != null && userTeamData.teamLogo != ""){
+        if (userTeamData.teamLogo != null){
             teamLogo = images("./Teams/"+userTeamData.teamLogo);
+        }
+
+        if (teamsData.teams != null) {
+            teamsData.teams.forEach(setUserTeamIndex);
+            teamName = teamsData.teams[teamsIndex];
         }
 
         return(
@@ -73,12 +102,12 @@ function InSeason() {
                             <div className="stats-container">
                                 <div className = "team">
                                     <button className="text-big">
-                                        &lt; Luigi Knights &gt;
+                                        &lt; {teamName} &gt;
                                     </button>
                                 </div>
                                 <div className = "stats">
                                     <button className="text-big">
-                                        &lt; Batting Stats &gt;
+                                        &lt; {statsLabels[statsIndex]} &gt;
                                     </button>
                                 </div>
                             </div>
@@ -111,5 +140,4 @@ function InSeason() {
         <div>{renderContent()}</div>
     );
 }
-  
 export default InSeason

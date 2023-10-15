@@ -38,6 +38,24 @@ def get_team():
         'teamLogo':team.logo,
         'teamName':team.name
     }
+
+#Route for seeing teams data
+@app.route('/teams')
+def get_teams():
+    api = MiddlewareAPI()
+   
+    teams = api.get_all_teams()   
+    teamList = []
+
+    for teamData in teams:
+        team = Team()
+        team.setup(teamData, api)
+        teamList.append(team.name)
+
+    # Returning to show in reactjs
+    return {
+        'teams':teamList
+    }
      
 # Running app
 if __name__ == '__main__':
