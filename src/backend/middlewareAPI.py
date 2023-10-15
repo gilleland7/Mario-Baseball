@@ -42,6 +42,12 @@ class MiddlewareAPI():
         
         return results
     
+    # returns [name, CharOneID, ... CharNineID, TeamStatsID, Stadium, Division, PlayerTeam (int), logo]   
+    def get_all_teams(self):
+        results = self.backend.get_all_teams()
+        
+        return results
+    
     # returns [id, name, type, isCaptain, bat, pitch, field, run, overall, png, PlayerStats ID] 
     def get_players_by_team(self, team):
         results = self.backend.get_player_ids_by_team(team)

@@ -35,8 +35,9 @@ def get_team():
 
     # Returning to show in reactjs
     return {
-        'teamLogo':team.logo
-        }
+        'teamLogo':team.logo,
+        'teamName':team.name
+    }
      
 # Running app
 if __name__ == '__main__':

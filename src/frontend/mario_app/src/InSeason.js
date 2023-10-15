@@ -4,14 +4,17 @@ import BattingStatsTable from './Table/BattingStatsTable';
 import StandingsTable from './Table/StandingsTable';
 
 function InSeason() {    
-    const [data, setdata] = useState({
-        teamLogo: ""
+    const [userTeamData, setuserteamdata] = useState({
+        teamLogo: "",
+        teamName: ""
     });
     
     const images = require.context('../public/Images/', true);
 
     const mzoneLogo = images('./lVl Logo.png');
     const superSluggersLogo = images('./Mario Super Sluggers Logo.png');
+
+    let teamLogo = "";
 
     // Using useEffect for single rendering
     useEffect(() => {
@@ -20,18 +23,19 @@ function InSeason() {
         fetch("/userteam").then((res) =>
             res.json().then((data) => {
                 // Setting a data from api
-                setdata({
-                    teamLogo: data.teamLogo
+                setuserteamdata({
+                    teamLogo: data.teamLogo,
+                    teamName: data.teamName
                 });               
             })
         );
     }, []);   
 
-    function renderContent() {
-        let teamLogo = "";
-        if (data.teamLogo != null){
-            teamLogo = images("./Teams/Luigi Knights logo.png");
+    function renderContent() {       
+        if (userTeamData.teamLogo != null && userTeamData.teamLogo != ""){
+            teamLogo = images("./Teams/"+userTeamData.teamLogo);
         }
+
         return(
             <div className="body">
                 <nav className="navbar background">
