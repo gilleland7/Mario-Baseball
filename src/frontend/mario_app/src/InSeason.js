@@ -10,7 +10,8 @@ function InSeason() {
     });
 
     const [teamsData, setteamsdata] = useState({
-        teams: null
+        teams: null,
+        playerValues: null
     });
     
     const images = require.context('../public/Images/', true);
@@ -24,6 +25,12 @@ function InSeason() {
 
     const statsLabels = ["Batting Stats", "Pitching Stats", "Defensive Stats"];
     let statsIndex = 0; 
+
+    let playerIndex = 0;
+    const playerStatsIndex = 11;
+    const hitterStatsIndex = 1;
+    const pitcherStatsIndex = 2;
+    const defenseStatsIndex = 3;
 
     // Using useEffect for single rendering
     useEffect(() => {
@@ -43,7 +50,8 @@ function InSeason() {
             res.json().then((data) => {
                 // Setting a data from api
                 setteamsdata({
-                    teams: data.teams
+                    teams: data.teams,
+                    playerValues: data.playerValues
                 });               
             })
         );
@@ -63,6 +71,10 @@ function InSeason() {
         if (teamsData.teams != null) {
             teamsData.teams.forEach(setUserTeamIndex);
             teamName = teamsData.teams[teamsIndex];
+        }
+
+        if (teamsData.playerValues != null){
+            console.log(teamsData.playerValues);
         }
 
         return(

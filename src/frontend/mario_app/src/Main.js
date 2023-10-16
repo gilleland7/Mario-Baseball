@@ -3,7 +3,7 @@ import InSeason from "./InSeason";
  
 function Main() {
     const [data, setdata] = useState({
-        state: 0
+        state: null
     });
  
     // Using useEffect for single rendering
@@ -21,15 +21,17 @@ function Main() {
     }, []);   
 
     function renderContent() {
-        if (data.state === 0){
-            console.log("preseason");
-        } else if (data.state === 1){
-            return <InSeason/>;
-        } else if (data.state === 2){
-            console.log("playoffs")
-        } else if (data.state === 3){
-            console.log("end of season")
-        }   
+        if (data.state != null){
+            if (data.state === 0){
+                console.log("preseason");
+            } else if (data.state === 1){
+                return <InSeason/>;
+            } else if (data.state === 2){
+                console.log("playoffs")
+            } else if (data.state === 3){
+                console.log("end of season")
+            }   
+        }
     }
     return (
         <div>{renderContent()}</div>        

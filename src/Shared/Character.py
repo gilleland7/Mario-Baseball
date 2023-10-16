@@ -74,17 +74,17 @@ class Character():
         self.stats = stats
 
         # CHEMISTRY
-        chemistry = api.get_chemistry(self)
+        good_chemistry, bad_chemistry = api.get_chemistry(self)
 
-        for entry in chemistry:
-            if (entry[3] == 1):
-                if (entry[1] == self.name):
-                    self.good_chemistry.append(entry[2])
-                else:
-                    self.good_chemistry.append(entry[3])
+        for entry in good_chemistry:
+            if (entry[1] == self.name):
+                self.good_chemistry.append(entry[2])
             else:
-                if (entry[1] == self.name):
-                    self.bad_chemistry.append(entry[2])
-                else:
-                    self.bad_chemistry.append(entry[3])
-        
+                self.good_chemistry.append(entry[3])
+
+        for entry in bad_chemistry:
+            if (entry[1] == self.name):
+                self.bad_chemistry.append(entry[2])
+            else:
+                self.bad_chemistry.append(entry[3])
+            

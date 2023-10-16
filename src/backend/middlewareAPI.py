@@ -122,8 +122,9 @@ class MiddlewareAPI():
     
     #[[id, char1, char2, type]]
     def get_chemistry(self, character):
-        results = self.backend.get_chemistry(character.name, character.type)
-        return results
+        good_chem = self.backend.get_chemistry(character.name, 1) # Good chemistry
+        bad_chem = self.backend.get_chemistry(character.name, 0) # Bad chemistry
+        return good_chem, bad_chem
 
     #################################################
     ############# Play Game Screen #############
