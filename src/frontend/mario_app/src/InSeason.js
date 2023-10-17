@@ -13,6 +13,14 @@ function InSeason() {
         teams: null,
         playerValues: null
     });
+
+    const [statsData] = useState({
+        warStats: null,
+        batterStats: null,
+        pticherStats: null,
+        defenseStats: null,
+        names: null
+    });
     
     const images = require.context('../public/Images/', true);
 
@@ -74,9 +82,29 @@ function InSeason() {
         }
 
         if (teamsData.playerValues != null){
+            let team = teamsData.playerValues[teamName];
+            let length = team.length;
+
+            statsData.warStats = [];
+            statsData.batterStats = [];
+            statsData.pitcherStats = [];
+            statsData.defenseStats = [];
+            statsData.names = [];
+
+            while(playerIndex < length){                
+                statsData.warStats.push(team[playerIndex][playerStatsIndex][0]); //WAR
+                statsData.batterStats.push(team[playerIndex][playerStatsIndex][hitterStatsIndex]);
+                statsData.pitcherStats.push(team[playerIndex][playerStatsIndex][pitcherStatsIndex]);
+                statsData.defenseStats.push(team[playerIndex][playerStatsIndex][defenseStatsIndex]);
+                statsData.names.push(team[playerIndex][0]);
+
+                playerIndex++;
+            }
+
+            playerIndex = 0;
             console.log(teamsData.playerValues);
         }
-
+        
         return(
             <div className="body">
                 <nav className="navbar background">
@@ -123,7 +151,7 @@ function InSeason() {
                                     </button>
                                 </div>
                             </div>
-                            <BattingStatsTable/>
+                            <BattingStatsTable playerNames={statsData.names} playerStats={statsData.batterStats} playerWar={statsData.warStats} />
                             <div className="standingsText"> Standings </div>
                             <div className="standings">
                                 <div className="division division-border division-border-right">

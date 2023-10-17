@@ -51,14 +51,14 @@ class Character():
 
         # STATS
         stats = PlayerStats()
-        #id, WAR, battingStats[id, AB, BA, BB, HBP, K, S, D, T, HR, SAC, RBI, R, OBP, SLG, SB, CS], defensiveStats[id, nicePlays, putOuts, errors],
+        #id, WAR, battingStats[id, AB, BA, BB, HBP, K, S, D, T, HR, SAC, RBI, R, OBP, SLG, SB, CS, PA], defensiveStats[id, nicePlays, putOuts, errors],
         #  pitchingStats[id, IP, GamesPitched, BB, H, R, ER, HR, ERA, W, L, S, HD, WHIP, K]
         playerStats, hitter, defender, pitcher = api.get_player_stats(char[10])
         stats.war = playerStats[1]
-
-        #ab, ba, bb, hbp, k, s, d, t, hr, sac, RBI, r, SLG, OBP, sb, cs
+        
+        #ab, ba, bb, hbp, k, hits, 2b, 3b, hr, sac, rbi, run, obp, slg, sb, cs, pa
         batting = BatterStats()
-        batting.setup(hitter[1], hitter[2], hitter[3], hitter[4], hitter[5], hitter[6], hitter[7], hitter[8], hitter[9], hitter[10], hitter[11], hitter[12], hitter[13], hitter[14], hitter[15], hitter[16])
+        batting.setup(hitter[1], hitter[2], hitter[3], hitter[4], hitter[5], hitter[6], hitter[7], hitter[8], hitter[9], hitter[10], hitter[11], hitter[12], hitter[13], hitter[14], hitter[15], hitter[16], hitter[17])
         stats.batterStats = batting
 
         #np, po, e
