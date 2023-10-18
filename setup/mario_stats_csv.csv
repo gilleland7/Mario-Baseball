@@ -8,7 +8,7 @@ Birdo,Yes,8,4,7,5,31.95,Yoshi| Shy Guy| Petey Piranha| Shy Guy| Toadette,Peach| 
 Luigi,Yes,6,6,7,7,31.55,Mario| Daisy,Waluigi| Boo| King Boo| Dry Bones| Bowser
 Peach,Yes,4,9,8,5,31.45,Daisy| Mario| Toad| Toadette| Toadsworth,Bowser| Birdo
 King Boo,,7,7,3,4,30.85,Petey Piranha| Boo| King K. Rool| Wiggler,Mario| Luigi| Yoshi| Baby Mario| Baby Luigi| Baby Peach| Baby Daisy
-Bowser Jr.,Yes,7,5,4,7,30,Bowser| Koopa Troopa| Hammer Bro| Dry Bones| Paratroopa| Magikoopa,Mario| Pinata| Noki
+Bowser Jr.,Yes,7,5,4,7,30,Bowser| Koopa Troopa| Hammer Bro| Dry Bones| Paratroopa| Magikoopa,Mario| Pianta| Noki
 Wario,Yes,8,5,3,4,30,Waluigi,Mario| Birdo
 Waluigi,Yes,4,8,8,5,29.9,Wario,Luigi| Birdo
 Pianta (Blue),,8,5,4,2,29.75,Mario| Noki| Toad| Toadsworth,Petey Piranha| Bowser Jr.| Goomba
@@ -31,7 +31,7 @@ Toad (Red),,5,5,3,7,24.75,Peach| Toadette| Toadsworth| Pianta| Baby Peach,Bowser
 Shy Guy (Red),,5,4,7,4,24.7,Birdo| Boo| Monty Mole,Yoshi| Baby Mario| Baby Luigi| Baby Peach| Baby Donkey Kong
 Toad (Yellow),,6,3,4,7,24.65,Peach| Toadette| Toadsworth| Pianta| Baby Peach,Bowser| Goomba| Paragoomba
 Magikoopa (Yellow),,3,7,8,2,24.6,Bowser| Bowser Jr.| Hammer Bro| Boo,Mario| Yoshi| Luigi| Baby Mario| Baby Luigi| Baby Peach| Baby Daisy
-Toadsworth,,3,7,7,3,24.35,Peach| Toad| Toadette| Pianta| Baby Peach,Paratoopa| Goomba| Paragoomba| Bowser
+Toadsworth,,3,7,7,3,24.35,Peach| Toad| Toadette| Pianta| Baby Peach,Paratroopa| Goomba| Paragoomba| Bowser
 Yoshi,Yes,4,4,6,9,24.2,Mario| Birdo| Baby Mario| Baby Luigi| Baby Peach| Baby Daisy| Baby Donkey Kong,Magikoopa| Shy Guy| Boo| King Boo
 Koopa Troopa (Green),,6,3,4,6,24.15,Bowser| Bowser Jr.| Paratroopa| Goomba| Dry Bones,
 Shy Guy (Blue),,4,5,7,4,24,Birdo| Boo| Monty Mole,Yoshi| Baby Mario| Baby Luigi| Baby Peach| Baby Donkey Kong
@@ -45,7 +45,7 @@ Noki (Blue),,4,5,4,7,23.25,Mario| Pianta| Toadette,Petey Piranha| Bowser Jr.| Ha
 Shy Guy (Black),,4,4,8,4,23.2,Birdo| Boo| Monty Mole,Yoshi| Baby Mario| Baby Luigi| Baby Peach| Baby Donkey Kong
 Paratroopa (Red),,4,4,7,5,22.95,Bowser| Koopa Troopa| Paragoomba,Toadsworth
 Shy Guy (Yellow),,4,4,7,5,22.95,Birdo| Boo| Monty Mole,Yoshi| Baby Mario| Baby Luigi| Baby Peach| Baby Donkey Kong
-Goomba,,3,6,6,4,22.55,Paragoomba| Monty Mole| Koopa Troopa,Toad| Toadette| Toadsworth| Pinata
+Goomba,,3,6,6,4,22.55,Paragoomba| Monty Mole| Koopa Troopa,Toad| Toadette| Toadsworth| Pianta
 Monty Mole,,4,4,5,7,22.45,Goomba| Shy Guy| Paragoomba,
 Noki (Red),,4,4,5,7,22.45,Mario| Pianta| Toadette,Petey Piranha| Bowser Jr.| Hammer Bro
 Magikoopa (Green),,2,7,8,2,22.35,Bowser| Bowser Jr.| Hammer Bro| Boo,Mario| Yoshi| Luigi| Baby Mario| Baby Luigi| Baby Peach| Baby Daisy
@@ -54,14 +54,20 @@ Toadette,,3,5,4,8,21.5,Peach| Birdo| Toad| Toadsworth| Noki,Bowser| Goomba| Para
 Dixie Kong,,3,3,8,7,20.9,Donkey Kong| Diddy Kong| Dixie Kong| Tiny Kong| Baby Donkey Kong,King K. Rool| Kritter| Dry Bones
 Baby Luigi,,2,5,5,8,20,Yoshi| Baby Mario| Baby Peach| Baby Daisy| Baby Donkey Kong,Magikoopa| Shy Guy| Boo| King Boo| Bowser| Petey Piranha
 Baby Peach,,2,8,5,6,23.65,Yoshi| Baby Mario| Baby Peach| Baby Daisy| Baby Donkey Kong| Toad| Toadsworth,Petey Piranha| Shy Guy| Boo| King Boo| Dry Bones| Bowser
-Baby Daisy,,4,6,5,6,25.05,Yoshi| Baby Mario| Baby Peach| Baby Daisy| Baby Donkey Kong,Petey Priranha| Boo| King Boo| Dry Bones| Bowser
+Baby Daisy,,4,6,5,6,25.05,Yoshi| Baby Mario| Baby Peach| Baby Daisy| Baby Donkey Kong,Petey Piranha| Boo| King Boo| Dry Bones| Bowser
 Blooper,,4,6,5,6,25.05,Boo| Petey Piranha| Wiggler,
 Wiggler,,7,3,4,7,26.9,Blooper| Petey Piranha| King Boo,
 Baby Donkey Kong,,6,3,8,4,26.15,Yoshi| Baby Mario| Baby Peach| Baby Daisy| Baby Donkey Kong| Dixie Kong| Funky Kong| Tiny Kong,Bowser| King K. Rool| Kritter| Shy Guy| Petey Piranha
-Funky Kong,,8,4,6,3,30.2,Donkey Kong| Diddy Kong| Dixie Kong| Tiny Kong| Baby Donkey Kong,King K. Rool. Kritter| Dry Bones
+Funky Kong,,8,4,6,3,30.2,Donkey Kong| Diddy Kong| Dixie Kong| Tiny Kong| Baby Donkey Kong,King K. Rool| Kritter| Dry Bones
 Tiny Kong,,5,5,7,5,26.75,Donkey Kong| Diddy Kong| Dixie Kong| Tiny Kong| Baby Donkey Kong,Birdo| King K. Rool| Kritter
 Kritter,,7,4,7,3,28.7,King K. Rool,Donkey Kong| Diddy Kong| Dixie Kong| Tiny Kong| Funky Kong| Baby Donkey Kong
 Kritter (Blue),,6,5,7,3,28,King K. Rool,Donkey Kong| Diddy Kong| Dixie Kong| Tiny Kong| Funky Kong| Baby Donkey Kong
 Kritter (Red),,8,3,7,3,29.4,King K. Rool,Donkey Kong| Diddy Kong| Dixie Kong| Tiny Kong| Funky Kong| Baby Donkey Kong
 Kritter (Brown),,7,3,7,4,27.65,King K. Rool,Donkey Kong| Diddy Kong| Dixie Kong| Tiny Kong| Funky Kong| Baby Donkey Kong
 King K. Rool,,10,6,2,1,33.8,Kritter| King Boo,Bowser| Donkey Kong| Diddy Kong| Dixie Kong| Tiny Kong| Funky Kong| Baby Donkey Kong
+Yoshi (Red),,4,2,4,8,19.1,Mario| Birdo| Baby Mario| Baby Luigi| Baby Peach| Baby Daisy| Baby Donkey Kong,Magikoopa| Shy Guy| Boo| King Boo
+Yoshi (Blue),,2,3,6,7,17.15,Mario| Birdo| Baby Mario| Baby Luigi| Baby Peach| Baby Daisy| Baby Donkey Kong,Magikoopa| Shy Guy| Boo| King Boo
+Yoshi (Yellow),,4,2,5,8,19.85,Mario| Birdo| Baby Mario| Baby Luigi| Baby Peach| Baby Daisy| Baby Donkey Kong,Magikoopa| Shy Guy| Boo| King Boo
+Yoshi (Light Blue),,2,2,5,8,15.35,Mario| Birdo| Baby Mario| Baby Luigi| Baby Peach| Baby Daisy| Baby Donkey Kong,Magikoopa| Shy Guy| Boo| King Boo
+Yoshi (Pink),,3,1,6,8,16.8,Mario| Birdo| Baby Mario| Baby Luigi| Baby Peach| Baby Daisy| Baby Donkey Kong,Magikoopa| Shy Guy| Boo| King Boo
+Mii,,6,6,6,6,15.15,,

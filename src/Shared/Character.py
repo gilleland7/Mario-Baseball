@@ -1,8 +1,11 @@
+import sys
+
 from .PlayerStats import PlayerStats
 from .BatterStats import BatterStats
 from .PitcherStats import PitcherStats
 from .DefensiveStats import DefensiveStats
-from Strings import *
+sys.path.append(".")
+from src.Strings import *
 
 class Character():
     def __init__(self):
@@ -12,14 +15,14 @@ class Character():
         self.run = 0
         self.overall = 0.0
         self.name = ""
-        self.type = NONE
+        self.type = None
         self.is_captain = 0
         self.good_chemistry = [] # Good chemistry = 1
         self.bad_chemistry = [] # Bad chemistry = 0
         self.png = ""
         self.stats = PlayerStats()
         
-    def setup(self, p, h, f, r, o, n, t, ic, gc, bc):
+    def setupBase(self, p, h, f, r, o, n, t, ic, gc, bc):
         self.pitch = p
         self.hit = h
         self.field = f
@@ -30,8 +33,8 @@ class Character():
         self.is_captain = ic
         self.good_chemistry = gc
         self.bad_chemistry = bc
-
-        if (self.type != "" and self.type is not None):
+        
+        if (self.type != "" and self.type != "None"):
             self.png = self.name + " (" + self.type + ").png"
         else:
             self.png = self.name + ".png"
@@ -74,17 +77,6 @@ class Character():
         self.stats = stats
 
         # CHEMISTRY
-        good_chemistry, bad_chemistry = api.get_chemistry(self)
+        self.good_chemistry, self.bad_chemistry = api.get_chemistry(self)
 
-        for entry in good_chemistry:
-            if (entry[1] == self.name):
-                self.good_chemistry.append(entry[2])
-            else:
-                self.good_chemistry.append(entry[3])
-
-        for entry in bad_chemistry:
-            if (entry[1] == self.name):
-                self.bad_chemistry.append(entry[2])
-            else:
-                self.bad_chemistry.append(entry[3])
             

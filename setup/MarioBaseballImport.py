@@ -5,7 +5,6 @@ import os
 import datetime
 
 # Get current and then parent directories
-
 sys.path.append(".")
 from src.Shared import Character
 
@@ -40,13 +39,14 @@ class Import():
         for character in characters:
             self.add__character_stats_to_database(character, id)
             id += 1
-        
+        id = 1
         # Chemistry has to be done after character stats so character IDs are established for foreign keys
         for character in characters:
-            self.add_character_chemistry(character)
+            self.add_character_chemistry(character, id)
+            id += 1
 
     
-    def add_character_chemistry(self, character):
+    def add_character_chemistry(self, character, id):
         # good chemistry
         
         for name in character.good_chemistry: # good chemistry is 1
@@ -54,20 +54,24 @@ class Import():
             results = self.cursor.fetchall()
 
             if (len(results) == 0): # Make sure relationship isn't already in database
-                self.cursor.execute('INSERT INTO Chemistry(characterOne, characterTwo, type) VALUES (?,?,1);',(character.name, name))
+                self.cursor.execute('SELECT id FROM Character WHERE (name = ?);',(name,))
+                results = self.cursor.fetchall()               
+                self.cursor.execute('INSERT INTO Chemistry(characterOne, characterTwo, type) VALUES (?,?,1);',(id, results[0][0]))
         
         for name in character.bad_chemistry: # good chemistry is 0
             self.cursor.execute('SELECT id FROM Chemistry WHERE (characterOne = ? AND characterTwo = ?) OR (characterOne = ? AND characterTwo = ?);',(character.name, name, name, character.name))
             results = self.cursor.fetchall()
 
             if (len(results) == 0): # Make sure relationship isn't already in database
-                self.cursor.execute('INSERT INTO Chemistry(characterOne, characterTwo, type) VALUES (?,?,0);',(character.name, name))
+                self.cursor.execute('SELECT id FROM Character WHERE (name = ?);',(name,))
+                results = self.cursor.fetchall()
+                self.cursor.execute('INSERT INTO Chemistry(characterOne, characterTwo, type) VALUES (?,?,0);',(id, results[0][0]))
         
         self.connection.commit()
 
     def add__character_stats_to_database(self, character, id):
         # set up game stats
-        self.cursor.execute('INSERT INTO BatterStats(id, BA, ops, obs) VALUES (?,0,0,0);',(id,))
+        self.cursor.execute('INSERT INTO BatterStats(id, BA, slg, obp) VALUES (?,0,0,0);',(id,))
         self.cursor.execute('INSERT INTO DefensiveStats(id) VALUES (?);',(id,))
         self.cursor.execute('INSERT INTO PitchingStats(id) VALUES (?);',(id,))
         
@@ -75,7 +79,7 @@ class Import():
         self.cursor.execute('INSERT INTO PlayerStats(id, battingStats, defensiveStats, pitchingStats) VALUES (?,?,?,?);',(id,id,id,id))
 
         # Character stats
-        self.cursor.execute('INSERT INTO Character(name, type, isCaptain, bat, pitch, field, run, weightedOverall, png, stats) VALUES (?,?,?,?,?,?,?,?,?,?);',(character.name, character.type, character.is_captain, character.hit, character.pitch, character.field, character.run, character.overall, character.png, id))
+        self.cursor.execute('INSERT INTO Character(id, name, type, isCaptain, bat, pitch, field, run, weightedOverall, png, stats) VALUES (?,?,?,?,?,?,?,?,?,?,?);',(id, character.name, character.type, character.is_captain, character.hit, character.pitch, character.field, character.run, character.overall, character.png, id))
 
         self.connection.commit()
     
@@ -121,7 +125,7 @@ class Import():
                     good_chemistry = self.setup_chemistry(row[7])
                     bad_chemistry = self.setup_chemistry(row[8])
 
-                    character.setup(pitch, bat, field, run, overall, name, type, is_captain, good_chemistry, bad_chemistry)
+                    character.setupBase(pitch, bat, field, run, overall, name, type, is_captain, good_chemistry, bad_chemistry)
                     characters.append(character)
                 else:
                     self.ignore_first_row = False
@@ -153,7 +157,8 @@ class Import():
         split_characters = data.split("|")
 
         for character in split_characters:
-            chemistry.append(character.strip())
+            if (character != ""):
+                chemistry.append(character.strip())
 
         return chemistry
 
@@ -174,6 +179,7 @@ def clear_database():
         cursor.execute('DELETE FROM Division;')
 
         cursor.execute('DELETE FROM Franchise;')
+        cursor.execute('DELETE FROM Season')
 
         connection.commit()
         connection.close()

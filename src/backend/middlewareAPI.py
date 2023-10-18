@@ -122,9 +122,34 @@ class MiddlewareAPI():
     
     #[[id, char1, char2, type]]
     def get_chemistry(self, character):
-        good_chem = self.backend.get_chemistry(character.name, 1) # Good chemistry
-        bad_chem = self.backend.get_chemistry(character.name, 0) # Bad chemistry
-        return good_chem, bad_chem
+        id = self.get_character_id(character)
+        good_chem = self.backend.get_chemistry(id, 1) # Good chemistry - id, char1, char2, type
+
+        good_chem_names = []
+
+        for chemID in good_chem:
+            ch = ""
+            if (chemID[1] != id):
+                ch = self.get_character(chemID[1])[1]
+            else:
+                ch = self.get_character(chemID[2])[1]
+
+            good_chem_names.append(ch)
+
+        bad_chem = self.backend.get_chemistry(id, 0) # Bad chemistry - id, char1, char2, type
+
+        bad_chem_names = []
+
+        for chemID in bad_chem:
+            ch = ""
+            if (chemID[1] != id):
+                ch = self.get_character(chemID[1])[1]
+            else:
+                ch = self.get_character(chemID[2])[1]
+
+            bad_chem_names.append(ch)
+
+        return good_chem_names, bad_chem_names
 
     #################################################
     ############# Play Game Screen #############

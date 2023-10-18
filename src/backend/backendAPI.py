@@ -212,8 +212,8 @@ class BackendAPI():
             self.connection.commit() 
 
     # id, characterOneID, characterTwoID, type
-    def get_chemistry(self, name, type):
-        self.cursor.execute('SELECT * FROM Chemistry WHERE type=? AND (characterOne=? OR characterTWO=?);', (type, name, name))
+    def get_chemistry(self, id, type):
+        self.cursor.execute('SELECT * FROM Chemistry WHERE type=? AND (characterOne=? OR characterTWO=?);', (type, id, id))
         results = self.cursor.fetchall()
         return results
     
