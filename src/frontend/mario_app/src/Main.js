@@ -3,7 +3,9 @@ import InSeason from "./InSeason";
  
 function Main() {
     const [data, setdata] = useState({
-        state: null
+        state: null,
+        year: null,
+        version: null
     });
  
     // Using useEffect for single rendering
@@ -14,7 +16,9 @@ function Main() {
             res.json().then((data) => {
                 // Setting a data from api
                 setdata({
-                    state : data.state
+                    state: data.state,
+                    version: data.version,
+                    year: data.year
                 });
             })
         );
@@ -25,7 +29,7 @@ function Main() {
             if (data.state === 0){
                 console.log("preseason");
             } else if (data.state === 1){
-                return <InSeason/>;
+                return <InSeason yearDB={data.year} versionDB={data.version}/>;
             } else if (data.state === 2){
                 console.log("playoffs")
             } else if (data.state === 3){

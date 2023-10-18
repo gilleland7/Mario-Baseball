@@ -3,7 +3,16 @@ import './InSeason.css';
 import BattingStatsTable from './Table/BattingStatsTable';
 import StandingsTable from './Table/StandingsTable';
 
-function InSeason() {    
+let year = 2023;
+let version = "v1.0";
+
+function InSeason({yearDB, versionDB}) { 
+ 
+    if (yearDB != null && versionDB != null){
+        year = yearDB;
+        version = "v"+versionDB.toString();
+    }
+    
     const [userTeamData, setuserteamdata] = useState({
         teamLogo: null,
         teamName: null
@@ -22,6 +31,12 @@ function InSeason() {
         names: null
     });
     
+    const [divisionData, setdivisiondata] = useState({
+        divisions: null,
+        divisionOne: null,
+        divisionTwo: null
+    });
+
     const images = require.context('../public/Images/', true);
 
     const mzoneLogo = images('./lVl Logo.png');
@@ -30,6 +45,9 @@ function InSeason() {
     let teamLogo = "";
     let teamName = "";
     let teamsIndex = 0;
+    let divisions = [];
+    let divisionOneData = [];
+    let divisionTwoData = [];
 
     const statsLabels = ["Batting Stats", "Pitching Stats", "Defensive Stats"];
     let statsIndex = 0; 
@@ -60,6 +78,17 @@ function InSeason() {
                 setteamsdata({
                     teams: data.teams,
                     playerValues: data.playerValues
+                });               
+            })
+        )
+
+        fetch("/divisions").then((res) =>
+            res.json().then((data) => {
+                // Setting a data from api
+                setdivisiondata({
+                    divisions: data.divisions,
+                    divisionOne: data.divisionOneTeams,
+                    divisionTwo: data.divisionTwoTeams
                 });               
             })
         );
@@ -104,6 +133,12 @@ function InSeason() {
             playerIndex = 0;
             console.log(teamsData.playerValues);
         }
+
+        if (divisionData.divisions != null){
+            divisions = divisionData.divisions;
+            divisionOneData = divisionData.divisionOne;
+            divisionTwoData = divisionData.divisionTwo;
+        }
         
         return(
             <div className="body">
@@ -134,8 +169,8 @@ function InSeason() {
                                 <button>Previous Seasons</button>
                             </div>
                             <div className="info">
-                                <div className="year">2016</div>
-                                <div className="version">v1.4</div>
+                                <div className="year">{year}</div>
+                                <div className="version">{version}</div>
                             </div>
                         </div>
                         <div className="secondHalf">
@@ -155,10 +190,10 @@ function InSeason() {
                             <div className="standingsText"> Standings </div>
                             <div className="standings">
                                 <div className="division division-border division-border-right">
-                                    <StandingsTable/>
+                                    <StandingsTable div={divisions[0]} divTeams={divisionOneData} />
                                 </div>
                                 <div className="division division-border">
-                                    <StandingsTable/>
+                                    <StandingsTable div={divisions[1]} divTeams={divisionTwoData}/>
                                 </div>
                             </div>
                         </div>

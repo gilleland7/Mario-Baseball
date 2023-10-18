@@ -1,9 +1,15 @@
 # Import flask and datetime module for showing date and time
 from flask import Flask
+import sys
 from middlewareAPI import MiddlewareAPI
 
 from Shared.State import State
 from Shared.Team import Team
+from Shared.TeamStats import TeamStats
+
+# Get current and then parent directories
+sys.path.append(".")
+from src import Strings
 
 # Initializing flask app
 app = Flask(__name__)
@@ -12,16 +18,14 @@ app = Flask(__name__)
 @app.route('/state')
 def get_state():
     api = MiddlewareAPI()
-    franchiseState = api.get_franchise()[1]
-    state = State(franchiseState)
-   
-    userTeam = api.get_user_team()
-    team = Team()
-    team.setup(userTeam, api)
-
+    franchiseState = api.get_franchise()
+    state = State(franchiseState[1])
+    
     # Returning to show in reactjs
     return {
         'state':state.value,
+        'version':franchiseState[2],
+        'year':franchiseState[3]
         }
 
 # Route for seeing userteam data
@@ -229,6 +233,71 @@ def get_teams():
     return {
         'teams':teamList,
         'playerValues':teamCharacterValues
+    }
+
+# Route for seeing state data
+@app.route('/divisions')
+def get_divisions():
+    api = MiddlewareAPI()
+    divisions = [Strings.MUSHROOM_DIVISION, Strings.FLOWER_DIVISION]
+
+    div_one_teams_raw = api.get_teams_by_division(divisions[0])
+    div_one_teams = []
+
+    for div_one_team in div_one_teams_raw:
+        team = Team()
+        team.name = div_one_team[0]
+        stats = TeamStats()
+
+        # id, overall, wins, losses, ties
+        team_stats = api.get_team_stats(team)
+        stats.setup(team_stats)
+        team.stats = stats
+        
+        div_one_teams.append(team)
+    
+    div_two_teams_raw = api.get_teams_by_division(divisions[1])
+    div_two_teams = []
+
+    for div_two_team in div_two_teams_raw:
+        team = Team()
+        team.name = div_two_team[0]
+        stats = TeamStats()
+
+        # id, overall, wins, losses, ties
+        team_stats = api.get_team_stats(team)
+        stats.setup(team_stats)
+        team.stats = stats
+
+        div_two_teams.append(team)
+    
+    # Order them by winning %
+    div_one_teams.sort(key=lambda x: x.stats.winning_percentage, reverse=True)
+    div_two_teams.sort(key=lambda x: x.stats.winning_percentage, reverse=True)
+
+    div_one_data = []
+    gb_most = div_one_teams[0].stats.wins-div_one_teams[0].stats.losses
+
+    for team in div_one_teams:
+        gb = (gb_most-(team.stats.wins-team.stats.losses))/2
+        if (gb == 0):
+            gb = "-"
+        div_one_data.append([team.name, team.stats.wins, team.stats.losses, team.stats.ties, gb])
+    
+    div_two_data = []
+    gb_most = div_two_teams[0].stats.wins-div_two_teams[0].stats.losses
+
+    for team in div_two_teams:
+        gb = (gb_most-(team.stats.wins-team.stats.losses))/2
+        if (gb == 0):
+            gb = "-"
+        div_two_data.append([team.name, team.stats.wins, team.stats.losses, team.stats.ties, gb])
+
+    # Returning to show in reactjs
+    return {
+        'divisions':divisions,
+        'divisionOneTeams': div_one_data,
+        'divisionTwoTeams': div_two_data
     }
      
 # Running app

@@ -10,17 +10,14 @@ function BattingStatsTable({playerNames, playerStats, playerWar}) {
         names = playerNames;
         sortedNames = [...names];
         sortedNames.sort();       
-        console.log(names);
     }
 
     if (playerStats != null){ 
         stats = playerStats;
-        console.log(stats);
     } 
 
     if (playerWar != null){
         war = playerWar;
-        console.log(war);
     }
 
     if (stats != null && war != null && names != null){
