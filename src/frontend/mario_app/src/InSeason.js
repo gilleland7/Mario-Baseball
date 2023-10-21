@@ -20,7 +20,8 @@ function InSeason({yearDB, versionDB}) {
 
     const [teamsData, setteamsdata] = useState({
         teams: null,
-        playerValues: null
+        playerValues: null,
+        teamsIndex: null
     });
 
     const [statsData] = useState({
@@ -37,14 +38,16 @@ function InSeason({yearDB, versionDB}) {
         divisionTwo: null
     });
 
+    const [isLoading, setIsLoading] = useState(true);
+
     const images = require.context('../public/Images/', true);
 
     const mzoneLogo = images('./lVl Logo.png');
     const superSluggersLogo = images('./Mario Super Sluggers Logo.png');
 
     let teamLogo = "";
+
     let teamName = "";
-    let teamsIndex = 0;
     let divisions = [];
     let divisionOneData = [];
     let divisionTwoData = [];
@@ -62,7 +65,7 @@ function InSeason({yearDB, versionDB}) {
     useEffect(() => {
         // Using fetch to fetch the api from
         // flask server it will be redirected to proxy
-        fetch("/userteam").then((res) =>
+       const fetchUser = fetch("/userteam").then((res) =>
             res.json().then((data) => {
                 // Setting a data from api
                 setuserteamdata({
@@ -70,19 +73,20 @@ function InSeason({yearDB, versionDB}) {
                     teamName: data.teamName
                 });               
             })
-        )
+        );
 
-        fetch("/teams").then((res) =>
+       const fetchTeams = fetch("/teams").then((res) =>
             res.json().then((data) => {
                 // Setting a data from api
                 setteamsdata({
                     teams: data.teams,
-                    playerValues: data.playerValues
+                    playerValues: data.playerValues,
+                    teamsIndex: data.teamIndex
                 });               
             })
-        )
+        );
 
-        fetch("/divisions").then((res) =>
+        const fetchDivision = fetch("/divisions").then((res) =>
             res.json().then((data) => {
                 // Setting a data from api
                 setdivisiondata({
@@ -92,29 +96,33 @@ function InSeason({yearDB, versionDB}) {
                 });               
             })
         );
+        // Use Promise.all to wait for all fetch requests to complete
+        Promise.all([fetchUser, fetchTeams, fetchDivision])
+        .then(() => {
+          setIsLoading(false);
+        })
     }, []);   
 
     function setUserTeamIndex(item, index) {
-        if (item === userTeamData.teamName){
-            teamsIndex = index;
+        if (item === userTeamData.teamName) {
+            setteamsdata({...teamsData, teamsIndex: index});
         }
     }
 
     function changeTeam(direction) {
-        console.log("HERE " + direction);
+        let index = teamsData.teamsIndex + direction;
+        setteamsdata({...teamsData, teamsIndex: index});
+        console.log("HERE " + teamsData.teamsIndex);
+
     }
 
     function renderContent() {       
-        if (userTeamData.teamLogo != null){
-            teamLogo = images("./Teams/"+userTeamData.teamLogo);
-        }
+        if (!isLoading){
+            teamLogo = images('./Teams/'+userTeamData.teamLogo);           
 
-        if (teamsData.teams != null) {
-            teamsData.teams.forEach(setUserTeamIndex);
-            teamName = teamsData.teams[teamsIndex];
-        }
+            teamName = teamsData.teams[teamsData.teamsIndex];
+            console.log(teamsData.teamsIndex);
 
-        if (teamsData.playerValues != null){
             let team = teamsData.playerValues[teamName];
             let length = team.length;
 
@@ -124,7 +132,7 @@ function InSeason({yearDB, versionDB}) {
             statsData.defenseStats = [];
             statsData.names = [];
 
-            while(playerIndex < length){                
+            while(playerIndex < length) {                
                 statsData.warStats.push(team[playerIndex][playerStatsIndex][0]); //WAR
                 statsData.batterStats.push(team[playerIndex][playerStatsIndex][hitterStatsIndex]);
                 statsData.pitcherStats.push(team[playerIndex][playerStatsIndex][pitcherStatsIndex]);
@@ -136,9 +144,7 @@ function InSeason({yearDB, versionDB}) {
 
             playerIndex = 0;
             console.log(teamsData.playerValues);
-        }
 
-        if (divisionData.divisions != null){
             divisions = divisionData.divisions;
             divisionOneData = divisionData.divisionOne;
             divisionTwoData = divisionData.divisionTwo;

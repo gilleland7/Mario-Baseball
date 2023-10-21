@@ -52,6 +52,10 @@ def get_teams():
     teamList = []   
     teamCharacterValues = {}
 
+    userTeam = api.get_user_team()[0]
+    index = 0
+    teamIndex = 0
+
     for teamData in teams:
         team = Team()
         team.setup(teamData, api)
@@ -228,11 +232,18 @@ def get_teams():
                                                      [char9.stats.defensiveStats.nicePlays, char9.stats.defensiveStats.putOuts, char9.stats.defensiveStats.errors]]]) 
         
         teamCharacterValues[team.name] = characterValues
+
+        if (team.name == userTeam):
+            print("HERE")
+            teamIndex = index
+        
+        index = index + 1
     
     # Returning to show in reactjs
     return {
         'teams':teamList,
-        'playerValues':teamCharacterValues
+        'playerValues':teamCharacterValues,
+        'teamIndex':teamIndex
     }
 
 # Route for seeing state data
