@@ -94,10 +94,14 @@ function InSeason({yearDB, versionDB}) {
         );
     }, []);   
 
-    function setUserTeamIndex(item, index){
+    function setUserTeamIndex(item, index) {
         if (item === userTeamData.teamName){
             teamsIndex = index;
         }
+    }
+
+    function changeTeam(direction) {
+        console.log("HERE " + direction);
     }
 
     function renderContent() {       
@@ -176,14 +180,18 @@ function InSeason({yearDB, versionDB}) {
                         <div className="secondHalf">
                             <div className="stats-container">
                                 <div className = "team">
-                                    <button className="text-big">
-                                        &lt; {teamName} &gt;
-                                    </button>
+                                    <div className="flexContainer">
+                                        <div className="text-big arrowLeft" onClick={() => changeTeam(-1)}>&lt;</div>
+                                        <div className="text-big teamName">{teamName}</div>
+                                        <div className="text-big arrowRight" onClick={() => changeTeam(1)}>&gt;</div>
+                                    </div>
                                 </div>
                                 <div className = "stats">
-                                    <button className="text-big">
-                                        &lt; {statsLabels[statsIndex]} &gt;
-                                    </button>
+                                    <div className="flexContainer">
+                                        <div className="text-big arrowLeftStats">&lt;</div>
+                                        <div className="text-big statsName">{statsLabels[statsIndex]}</div>
+                                        <div className="text-big arrowRightStats">&gt;</div>
+                                    </div>
                                 </div>
                             </div>
                             <BattingStatsTable playerNames={statsData.names} playerStats={statsData.batterStats} playerWar={statsData.warStats} />

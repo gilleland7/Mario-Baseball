@@ -108,6 +108,45 @@ button {
   flex:1;
 }
 
+.flexContainer {
+  display: flex;
+  background-color: #f0f0f0;
+}
+
+.teamName {
+  flex: 1;
+  text-align: center;
+}
+
+.statsName {
+  flex: 1;
+  text-align: center;
+}
+
+.arrowRight {
+  flex: 1;
+  text-align: left;
+  cursor: pointer;
+}
+
+.arrowLeft {
+  flex: 1;
+  text-align: right;
+  cursor: pointer;
+}
+
+.arrowRightStats {
+  flex: 4;
+  text-align: left;
+  cursor: pointer;
+}
+
+.arrowLeftStats {
+  flex: 4;
+  text-align: right;
+  cursor: pointer;
+}
+
 .stats {
   flex:3;
 }
