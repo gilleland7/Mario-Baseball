@@ -103,17 +103,14 @@ function InSeason({yearDB, versionDB}) {
         })
     }, []);   
 
-    function setUserTeamIndex(item, index) {
-        if (item === userTeamData.teamName) {
-            setteamsdata({...teamsData, teamsIndex: index});
-        }
-    }
-
     function changeTeam(direction) {
         let index = teamsData.teamsIndex + direction;
+        if (index >= teamsData.teams.length) {
+            index = 0;
+        } else if (index < 0) {
+            index = teamsData.teams.length - 1;
+        }
         setteamsdata({...teamsData, teamsIndex: index});
-        console.log("HERE " + teamsData.teamsIndex);
-
     }
 
     function renderContent() {       
@@ -121,7 +118,6 @@ function InSeason({yearDB, versionDB}) {
             teamLogo = images('./Teams/'+userTeamData.teamLogo);           
 
             teamName = teamsData.teams[teamsData.teamsIndex];
-            console.log(teamsData.teamsIndex);
 
             let team = teamsData.playerValues[teamName];
             let length = team.length;
