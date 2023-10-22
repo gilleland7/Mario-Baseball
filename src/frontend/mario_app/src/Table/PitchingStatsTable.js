@@ -15,7 +15,7 @@ function PitchingStatsTable({playerNames, playerStats}) {
         stats = playerStats;
     } 
 
-    if (stats != null && war != null && names != null){
+    if (stats != null && names != null){
         return (
             <div className="StatsTableClass">
                 <table className="StatsTable">
@@ -55,6 +55,7 @@ function PitchingStatsTable({playerNames, playerStats}) {
                                 <td className="StatsData">{stats[names.indexOf(name)][11]}</td>
                                 <td className="StatsData">{stats[names.indexOf(name)][12]}</td>
                                 <td className="StatsData">{stats[names.indexOf(name)][13]}</td>
+                                <td className="StatsData">{stats[names.indexOf(name)][14]}</td>
                             </tr>
                         ))}
                     </tbody>

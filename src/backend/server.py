@@ -234,7 +234,6 @@ def get_teams():
         teamCharacterValues[team.name] = characterValues
 
         if (team.name == userTeam):
-            print("HERE")
             teamIndex = index
         
         index = index + 1

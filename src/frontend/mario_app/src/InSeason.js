@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import './InSeason.css';
 import BattingStatsTable from './Table/BattingStatsTable';
+import DefensiveStatsTable from './Table/DefensiveStatsTable';
+import PitchingStatsTable from './Table/PitchingStatsTable';
 import StandingsTable from './Table/StandingsTable';
 
 let year = 2023;
@@ -24,12 +26,13 @@ function InSeason({yearDB, versionDB}) {
         teamsIndex: null
     });
 
-    const [statsData] = useState({
+    const [statsData, setstatsdata] = useState({
         warStats: null,
         batterStats: null,
         pticherStats: null,
         defenseStats: null,
-        names: null
+        names: null,
+        statsIndex: 0
     });
     
     const [divisionData, setdivisiondata] = useState({
@@ -52,8 +55,7 @@ function InSeason({yearDB, versionDB}) {
     let divisionOneData = [];
     let divisionTwoData = [];
 
-    const statsLabels = ["Batting Stats", "Pitching Stats", "Defensive Stats"];
-    let statsIndex = 0; 
+    const statsLabels = ["Batting Stats", "Pitching Stats", "Defensive Stats"]; 
 
     let playerIndex = 0;
     const playerStatsIndex = 11;
@@ -113,6 +115,27 @@ function InSeason({yearDB, versionDB}) {
         setteamsdata({...teamsData, teamsIndex: index});
     }
 
+    function changeStatsTable(direction) {
+        let stats = statsData.statsIndex + direction;
+
+        if (stats >= statsLabels.length) {
+            stats = 0;
+        } else if (stats < 0) {
+            stats = statsLabels.length - 1;
+        }
+        setstatsdata({statsIndex: stats});
+    }
+
+    const renderTable = () => {
+        if (statsData.statsIndex === 0) {
+            return <BattingStatsTable playerNames={statsData.names} playerStats={statsData.batterStats} playerWar={statsData.warStats} />
+        } else if (statsData.statsIndex === 1) {
+            return <PitchingStatsTable playerNames={statsData.names}  playerStats={statsData.pitcherStats}/>;
+        } else {
+            return <DefensiveStatsTable playerNames={statsData.names}  playerStats={statsData.defenseStats}/>;
+        }
+      };
+
     function renderContent() {       
         if (!isLoading){
             teamLogo = images('./Teams/'+userTeamData.teamLogo);           
@@ -128,12 +151,20 @@ function InSeason({yearDB, versionDB}) {
             statsData.defenseStats = [];
             statsData.names = [];
 
-            while(playerIndex < length) {                
+            while (playerIndex < length) {                
                 statsData.warStats.push(team[playerIndex][playerStatsIndex][0]); //WAR
                 statsData.batterStats.push(team[playerIndex][playerStatsIndex][hitterStatsIndex]);
                 statsData.pitcherStats.push(team[playerIndex][playerStatsIndex][pitcherStatsIndex]);
                 statsData.defenseStats.push(team[playerIndex][playerStatsIndex][defenseStatsIndex]);
-                statsData.names.push(team[playerIndex][0]);
+
+                let name = team[playerIndex][0];
+                let type = team[playerIndex][1];
+
+                if (type != "None") {
+                    name = type + " " + team[playerIndex][0];
+                }  
+                 
+                statsData.names.push(name);
 
                 playerIndex++;
             }
@@ -190,13 +221,13 @@ function InSeason({yearDB, versionDB}) {
                                 </div>
                                 <div className = "stats">
                                     <div className="flexContainer">
-                                        <div className="text-big arrowLeftStats">&lt;</div>
-                                        <div className="text-big statsName">{statsLabels[statsIndex]}</div>
-                                        <div className="text-big arrowRightStats">&gt;</div>
+                                        <div className="text-big arrowLeftStats" onClick={() => changeStatsTable(-1)}>&lt;</div>
+                                        <div className="text-big statsName">{statsLabels[statsData.statsIndex]}</div>
+                                        <div className="text-big arrowRightStats" onClick={() => changeStatsTable(1)}>&gt;</div>
                                     </div>
                                 </div>
                             </div>
-                            <BattingStatsTable playerNames={statsData.names} playerStats={statsData.batterStats} playerWar={statsData.warStats} />
+                            {renderTable()}
                             <div className="standingsText"> Standings </div>
                             <div className="standings">
                                 <div className="division division-border division-border-right">

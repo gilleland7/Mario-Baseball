@@ -15,15 +15,15 @@ function DefensiveStatsTable({playerNames, playerStats}) {
         stats = playerStats;
     } 
 
-    if (stats != null && war != null && names != null){
+    if (stats != null && names != null){
         return (
             <div className="StatsTableClass">
                 <table className="StatsTable">
                     <tbody>
                         <tr className="StatsRow">
                             <th className="StatsHeader">Player</th>
-                            <th className="StatsHeader">Put Outs</th>
                             <th className="StatsHeader">Nice Plays</th>
+                            <th className="StatsHeader">Put Outs</th>
                             <th className="StatsHeader">Errors</th>
                         </tr>
                         {sortedNames.map((name, index) => (

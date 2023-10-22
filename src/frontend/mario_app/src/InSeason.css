@@ -114,7 +114,7 @@ button {
 }
 
 .teamName {
-  flex: 1;
+  flex: 2;
   text-align: center;
 }
 
@@ -136,13 +136,13 @@ button {
 }
 
 .arrowRightStats {
-  flex: 4;
+  flex: 3;
   text-align: left;
   cursor: pointer;
 }
 
 .arrowLeftStats {
-  flex: 4;
+  flex: 3;
   text-align: right;
   cursor: pointer;
 }
