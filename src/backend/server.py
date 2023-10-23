@@ -43,6 +43,33 @@ def get_team():
         'teamName':team.name
     }
 
+# Route for seeing last game data
+@app.route('/lastgame')
+def get_prev_game():
+    api = MiddlewareAPI()
+   
+    #id, gameNum, stadium ID, homeTeam name, awayTeam name, homeScore, awayScore
+    game = api.get_previous_game()
+    home = game[3]
+    away = game[4]
+    homeScore = game[5]
+    awayScore = game[6]
+
+    winner = 'tie'
+    if (homeScore > awayScore):
+        winner = home
+    elif (awayScore > homeScore):
+        winner = away
+
+    # Returning to show in reactjs
+    return {
+        'home':home,
+        'away':away,
+        'homeScore':homeScore,
+        'awayScore':awayScore,
+        'winner':winner
+    }
+
 #Route for seeing teams data
 @app.route('/teams')
 def get_teams():
