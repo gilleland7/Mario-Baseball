@@ -20,6 +20,14 @@ function InSeason({yearDB, versionDB}) {
         teamName: null
     });
 
+    const [previousGameData, setpreviousgame] = useState({
+        home: null,
+        away: null,
+        homeScore: null,
+        awayScore: null,
+        winner: null
+    });
+
     const [teamsData, setteamsdata] = useState({
         teams: null,
         playerValues: null,
@@ -63,6 +71,9 @@ function InSeason({yearDB, versionDB}) {
     const pitcherStatsIndex = 2;
     const defenseStatsIndex = 3;
 
+    let previousHome = '';
+    let previousAway = '';
+
     // Using useEffect for single rendering
     useEffect(() => {
         // Using fetch to fetch the api from
@@ -88,6 +99,19 @@ function InSeason({yearDB, versionDB}) {
             })
         );
 
+        const fetchPrevious = fetch("/lastgame").then((res) =>
+            res.json().then((data) => {
+                // Setting a data from api
+                setpreviousgame({
+                    home: data.home,
+                    away: data.away,
+                    homeScore: data.homeScore,
+                    awayScore: data.awayScore,
+                    winner: data.winner
+                });               
+            })
+        );
+
         const fetchDivision = fetch("/divisions").then((res) =>
             res.json().then((data) => {
                 // Setting a data from api
@@ -99,7 +123,7 @@ function InSeason({yearDB, versionDB}) {
             })
         );
         // Use Promise.all to wait for all fetch requests to complete
-        Promise.all([fetchUser, fetchTeams, fetchDivision])
+        Promise.all([fetchUser, fetchTeams, fetchDivision, fetchPrevious])
         .then(() => {
           setIsLoading(false);
         })
@@ -175,6 +199,15 @@ function InSeason({yearDB, versionDB}) {
             divisions = divisionData.divisions;
             divisionOneData = divisionData.divisionOne;
             divisionTwoData = divisionData.divisionTwo;
+
+            previousHome =  String.fromCharCode(160) + previousGameData.home + " " + previousGameData.homeScore;
+            previousAway =  String.fromCharCode(160) + previousGameData.away + " " + previousGameData.awayScore;
+
+            if (previousGameData.winner === previousGameData.home) {
+                previousHome += "<";
+            } else if (previousGameData.winner === previousGameData.away){
+                previousAway += "<";
+            }
         }
         
         return(
@@ -195,10 +228,10 @@ function InSeason({yearDB, versionDB}) {
                                 Last Game: <br/>
                                 <div className = "lastGame">
                                     <div className="topTeam"> 
-                                        &nbsp; Mario 6 <br/>
+                                        {previousAway} <br/>
                                     </div>
                                     <div className="bottomTeam">
-                                        &nbsp; Luigi 7 &lt;
+                                        {previousHome}
                                     </div>
                                 </div>
                             </div>

@@ -67,7 +67,7 @@ class MiddlewareAPI():
     # returns id, gameNum, stadium ID, homeTeam name, awayTeam name, homeScore, awayScore
     def get_previous_game(self):
         results = self.get_user_team()
-        user_team = results
+        user_team = results[0]
 
         results = self.get_year()
         year = results
