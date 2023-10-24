@@ -168,16 +168,16 @@ button {
   padding-left: 42%;
 }
 
-.bottomTeam {
-  font-weight: bold;
-}
-
 .previous {
   display: flex;
   flex: 1;
   padding-top: 164.5%;
   justify-content: center;
   background-color: var(--bg);
+}
+
+.bold {
+  font-weight: bold;
 }
 
 .info {

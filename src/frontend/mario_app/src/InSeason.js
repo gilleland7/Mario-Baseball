@@ -74,6 +74,9 @@ function InSeason({yearDB, versionDB}) {
     let previousHome = '';
     let previousAway = '';
 
+    let isTopTextBold = false;
+    let isBottomTextBold = false;
+
     // Using useEffect for single rendering
     useEffect(() => {
         // Using fetch to fetch the api from
@@ -161,7 +164,7 @@ function InSeason({yearDB, versionDB}) {
       };
 
     function renderContent() {       
-        if (!isLoading){
+        if (!isLoading) {
             teamLogo = images('./Teams/'+userTeamData.teamLogo);           
 
             teamName = teamsData.teams[teamsData.teamsIndex];
@@ -184,7 +187,7 @@ function InSeason({yearDB, versionDB}) {
                 let name = team[playerIndex][0];
                 let type = team[playerIndex][1];
 
-                if (type != "None") {
+                if (type !== "None") {
                     name = type + " " + team[playerIndex][0];
                 }  
                  
@@ -202,11 +205,15 @@ function InSeason({yearDB, versionDB}) {
 
             previousHome =  String.fromCharCode(160) + previousGameData.home + " " + previousGameData.homeScore;
             previousAway =  String.fromCharCode(160) + previousGameData.away + " " + previousGameData.awayScore;
-
+            console.log(previousGameData.winner);
             if (previousGameData.winner === previousGameData.home) {
                 previousHome += "<";
-            } else if (previousGameData.winner === previousGameData.away){
+                isBottomTextBold = true;
+                isTopTextBold = false;
+            } else if (previousGameData.winner === previousGameData.away) {
                 previousAway += "<";
+                isTopTextBold = true;
+                isBottomTextBold = false;
             }
         }
         
@@ -227,10 +234,10 @@ function InSeason({yearDB, versionDB}) {
                             <div className="text-small">
                                 Last Game: <br/>
                                 <div className = "lastGame">
-                                    <div className="topTeam"> 
+                                    <div className={isTopTextBold ? 'bold' : ''}> 
                                         {previousAway} <br/>
                                     </div>
-                                    <div className="bottomTeam">
+                                    <div className={isBottomTextBold ? 'bold' : ''}>
                                         {previousHome}
                                     </div>
                                 </div>
