@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import InSeason from "./InSeason";
+import './main.css';
  
 function Main() {
     const [data, setdata] = useState({
@@ -38,7 +39,7 @@ function Main() {
         }
     }
     return (
-        <div>{renderContent()}</div>        
+        <div className='main'>{renderContent()}</div>        
     );
 }
 export default Main

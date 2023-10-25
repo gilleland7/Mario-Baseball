@@ -11,6 +11,7 @@
 body {
   background-color: var(--bg);
   height: 100%;
+  width: 100%;
 }
 
 button {
@@ -83,12 +84,14 @@ button {
   background-color: var(--bg);
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+  min-width: 0;
 }
 
 .secondHalf {
   flex: 4;
   height: 80%;
   background-color: var(--bg);
+  min-width: 0;
 }
 
 .text-big { 
@@ -105,7 +108,8 @@ button {
 }
 
 .team {
-  flex:1;
+  flex: 1;
+  min-width: 0;
 }
 
 .flexContainer {
@@ -116,35 +120,41 @@ button {
 .teamName {
   flex: 2;
   text-align: center;
+  min-width: 0;
 }
 
 .statsName {
   flex: 1;
   text-align: center;
+  min-width: 0;
 }
 
 .arrowRight {
   flex: 1;
   text-align: left;
   cursor: pointer;
+  min-width: 0;
 }
 
 .arrowLeft {
   flex: 1;
   text-align: right;
   cursor: pointer;
+  min-width: 0;
 }
 
 .arrowRightStats {
   flex: 3;
   text-align: left;
   cursor: pointer;
+  min-width: 0;
 }
 
 .arrowLeftStats {
   flex: 3;
   text-align: right;
   cursor: pointer;
+  min-width: 0;
 }
 
 .stats {
@@ -161,6 +171,7 @@ button {
   height: 80%;
   flex: 1;
   background-color: var(--bg);
+  min-width: 0;
 }
 
 .lastGame {
@@ -178,6 +189,7 @@ button {
   padding-top: 164.5%;
   justify-content: center;
   background-color: var(--bg);
+  min-width: 0;
 }
 
 .info {
@@ -187,9 +199,10 @@ button {
 }
 
 .year {
-  flex:1;
+  flex: 1;
   padding-left: 2%;
   background-color: var(--bg);
+  min-width: 0;
 }
 
 .version {
@@ -208,6 +221,7 @@ button {
   display: flex;
   flex: 1;
   background-color: var(--bg);
+  min-width: 0;
 }
 
 .division {
@@ -215,6 +229,7 @@ button {
   flex: 1;
   justify-content: center;
   background-color: var(--bg);
+  min-width: 0;
 }
 
 .division-border {

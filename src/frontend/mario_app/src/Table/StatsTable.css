@@ -5,12 +5,18 @@
     justify-content: center;
     align-items: center;  
     padding-top: 5%;
+    overflow: auto;
 }
  
 .StatsTable {
     border: 2px solid black;
     table-layout: auto;
     border-collapse: collapse;
+    table-layout: fixed; /* Ensure fixed table layout to prevent dynamic column resizing */
+    white-space: nowrap; /* Prevent text from wrapping inside cells */
+    overflow-x: auto; /* Allow horizontal scrolling if the content overflows */
+    max-width: 100%;
+    width: auto;
 }
  
 .StatsHeader {
