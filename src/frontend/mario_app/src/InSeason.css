@@ -179,10 +179,6 @@ button {
   padding-left: 42%;
 }
 
-.bottomTeam {
-  font-weight: bold;
-}
-
 .previous {
   display: flex;
   flex: 1;
@@ -190,6 +186,10 @@ button {
   justify-content: center;
   background-color: var(--bg);
   min-width: 0;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 .info {
