@@ -50,10 +50,11 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 3%;
 }
 
 .bottomRight {
-  padding-left: 1%;
+  padding-left: 5%;
 }
 
 .bottomLogo img{
@@ -83,12 +84,11 @@ button {
   height: 100%;
   background-color: var(--bg);
   border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
   min-width: 0;
 }
 
 .secondHalf {
-  flex: 4;
+  flex: 5;
   height: 80%;
   background-color: var(--bg);
   min-width: 0;
@@ -105,6 +105,14 @@ button {
   font-size: 16px;
   text-align: center;
   padding-top: 5%;
+  padding-right: 10%;
+}
+
+.playGame {
+  text-align: center;
+  cursor: pointer;
+  min-width: 0;
+  background-color: #f0f0f0;
 }
 
 .team {
@@ -130,28 +138,28 @@ button {
 }
 
 .arrowRight {
-  flex: 1;
+  flex: .5;
   text-align: left;
   cursor: pointer;
   min-width: 0;
 }
 
 .arrowLeft {
-  flex: 1;
+  flex: .5;
   text-align: right;
   cursor: pointer;
   min-width: 0;
 }
 
 .arrowRightStats {
-  flex: 3;
+  flex: 2;
   text-align: left;
   cursor: pointer;
   min-width: 0;
 }
 
 .arrowLeftStats {
-  flex: 3;
+  flex: 2;
   text-align: right;
   cursor: pointer;
   min-width: 0;
@@ -176,13 +184,13 @@ button {
 
 .lastGame {
   text-align: justify;
-  padding-left: 42%;
+  padding-left: 30%;
 }
 
 .previous {
   display: flex;
   flex: 1;
-  padding-top: 164.5%;
+  padding-top: 160.25%;
   justify-content: center;
   background-color: var(--bg);
   min-width: 0;
@@ -196,6 +204,7 @@ button {
   display: flex;
   padding-top: 5%;
   background-color: var(--bg);
+  border-bottom: 1px solid var(--border);
 }
 
 .year {
@@ -214,7 +223,7 @@ button {
 .standingsText {
   text-align: center;
   font-size: 20px;
-  padding-top: 22%;
+  padding-top: 6%;
 }
 
 .standings {
@@ -222,6 +231,7 @@ button {
   flex: 1;
   background-color: var(--bg);
   min-width: 0;
+  height: 100%;
 }
 
 .division {
@@ -235,9 +245,4 @@ button {
 .division-border {
   height: 5%;
   border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
-.division-border-right {
-  border-right: 1px solid var(--border);
 }

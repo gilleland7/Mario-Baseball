@@ -205,7 +205,7 @@ function InSeason({yearDB, versionDB}) {
 
             previousHome =  String.fromCharCode(160) + previousGameData.home + " " + previousGameData.homeScore;
             previousAway =  String.fromCharCode(160) + previousGameData.away + " " + previousGameData.awayScore;
-            console.log(previousGameData.winner);
+            
             if (previousGameData.winner === previousGameData.home) {
                 previousHome += "<";
                 isBottomTextBold = true;
@@ -228,9 +228,9 @@ function InSeason({yearDB, versionDB}) {
                 </nav>
                 <div className="container">
                         <div className="firstHalf">
-                            <button className="text-big">
+                            <div className="text-big playGame">
                                 Play Game @ Bowser
-                            </button>
+                            </div>
                             <div className="text-small">
                                 Last Game: <br/>
                                 <div className = "lastGame">
@@ -249,6 +249,16 @@ function InSeason({yearDB, versionDB}) {
                                 <div className="year">{year}</div>
                                 <div className="version">{version}</div>
                             </div>
+                            <nav className="navbar background">
+                                <ul className="nav-list">
+                                    <div className="bottomLogo">
+                                        <img src={mzoneLogo} alt="mzone"/>
+                                    </div>
+                                    <div className="bottomLogo bottomRight">
+                                        <img src={superSluggersLogo} alt="Mario Super Sluggers"/>
+                                    </div>
+                                </ul>
+                            </nav>
                         </div>
                         <div className="secondHalf">
                             <div className="stats-container">
@@ -270,7 +280,7 @@ function InSeason({yearDB, versionDB}) {
                             {renderTable()}
                             <div className="standingsText"> Standings </div>
                             <div className="standings">
-                                <div className="division division-border division-border-right">
+                                <div className="division division-border">
                                     <StandingsTable div={divisions[0]} divTeams={divisionOneData} />
                                 </div>
                                 <div className="division division-border">
@@ -278,17 +288,7 @@ function InSeason({yearDB, versionDB}) {
                                 </div>
                             </div>
                         </div>
-                </div>
-                <nav className="navbar background">
-                    <ul className="nav-list">
-                        <div className="bottomLogo">
-                            <img src={mzoneLogo} alt="mzone"/>
-                        </div>
-                        <div className="bottomLogo bottomRight">
-                            <img src={superSluggersLogo} alt="Mario Super Sluggers"/>
-                        </div>
-                    </ul>
-                </nav>
+                </div>               
             </div>
         );
     }
