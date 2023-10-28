@@ -83,7 +83,6 @@ button {
   flex: 1;
   height: 100%;
   background-color: var(--bg);
-  border-right: 1px solid var(--border);
   min-width: 0;
 }
 
@@ -106,6 +105,7 @@ button {
   text-align: center;
   padding-top: 5%;
   padding-right: 10%;
+  border-right: 1px solid var(--border);
 }
 
 .playGame {
@@ -194,6 +194,7 @@ button {
   justify-content: center;
   background-color: var(--bg);
   min-width: 0;
+  border-right: 1px solid var(--border);
 }
 
 .bold {
@@ -205,6 +206,7 @@ button {
   padding-top: 5%;
   background-color: var(--bg);
   border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
 }
 
 .year {
