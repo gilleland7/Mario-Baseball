@@ -1,4 +1,32 @@
 .modal {
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    background: #8FAADC;
     z-index: 1;
-    text-align: center;
+    display: flex;
+    flex-direction: column; /* Stack top bar and content vertically */
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between; /* Center title and push close button to the right */
+  align-items: center;
+}
+
+.text {
+    flex: 1; /* Center the title within the top bar */
+    text-align: center; /* Center the text within the title div */
+    color: white;
+}
+
+.xButton {
+    background-color: #4472C4;
+    border: solid 1px #172C51;
+    margin: 10px 10px;
+    width: 100px;
+    height : 50px;
+    color: white;
 }

@@ -110,8 +110,8 @@ button {
 
 .playGame {
   text-align: center;
-  cursor: pointer;
   min-width: 0;
+  cursor: pointer;
   background-color: #f0f0f0;
 }
 
@@ -197,6 +197,17 @@ button {
   border-right: 1px solid var(--border);
 }
 
+.previousButton {
+  background: linear-gradient(to bottom, #4da6e6, #3b8fd9);
+  border: none;
+  color: white; /* White text color for better visibility */
+  font-size: 20px;
+  padding: 15px 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+  transition: background 0.3s, transform 0.2s;
+}
 .bold {
   font-weight: bold;
 }

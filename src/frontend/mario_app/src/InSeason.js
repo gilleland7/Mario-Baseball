@@ -156,6 +156,10 @@ function InSeason({yearDB, versionDB}) {
         setstatsdata({statsIndex: stats});
     }
 
+    const closeModal = () => {
+        setpreviousseason(false);
+      };
+
     const renderTable = () => {
         if (statsData.statsIndex === 0) {
             return <BattingStatsTable playerNames={statsData.names} playerStats={statsData.batterStats} playerWar={statsData.warStats} />
@@ -246,7 +250,7 @@ function InSeason({yearDB, versionDB}) {
                                 </div>
                             </div>
                             <div className="previous">
-                                <button onClick={() => setpreviousseason(true)}>Previous Seasons</button>
+                                <button className="previousButton" onClick={() => setpreviousseason(true)}>Previous Seasons</button>
                             </div>
                             <div className="info">
                                 <div className="year">{year}</div>
@@ -292,7 +296,7 @@ function InSeason({yearDB, versionDB}) {
                             </div>
                         </div>
                 </div>
-                {previousSeason && <PreviousSeason setpreviousseason={setpreviousseason} />}               
+                {previousSeason && <PreviousSeason closeModal={closeModal} />}               
             </div>
         );
     }
