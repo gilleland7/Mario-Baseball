@@ -339,12 +339,17 @@ class BackendAPI():
 
     # name, winner, season
     def get_awards(self, seasonYear):
-        self.cursor.execute('SELECT Awards.name, Character.name, Awards.season FROM Awards INNER JOIN Character ON Awards.Winner = Character.id WHERE Awards.season=?;', (seasonYear,))
+        self.cursor.execute('SELECT Awards.name, Character.name, Awards.season FROM Awards INNER JOIN Character ON Awards.Winner = Character.id WHERE Awards.season=? ORDER BY Awards.id;', (seasonYear,))
+        results = self.cursor.fetchall()
+        return results
+    # [name, winner, season]
+    def get_all_awards(self):
+        self.cursor.execute('SELECT Awards.name, Character.name, Awards.season FROM Awards INNER JOIN Character ON Awards.Winner = Character.id ORDER BY Awards.season, Awards.id;')
         results = self.cursor.fetchall()
         return results
     
-    def set_awards(self, seasonYear, characterID, awardName):
-        self.cursor.execute('INSERT INTO Awards (season, winner, name) VALUES (?,?,?);', (seasonYear, characterID, awardName))
+    def set_awards(self, seasonYear, characterID, awardName, id):
+        self.cursor.execute('INSERT INTO Awards (season, winner, name, id) VALUES (?,?,?, ?);', (seasonYear, characterID, awardName, id))
         self.connection.commit()
 
     def clear_team(self):

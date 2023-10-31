@@ -438,12 +438,22 @@ class MiddlewareAPI():
         
         return results
 
+    # [name, winner, season]
+    def get_all_awards(self):
+        results = self.backend.get_all_awards()
+        return results
+
     def set_awards(self, winners_awards_dict):
         year = self.get_year()
 
         for winner in winners_awards_dict:
             id = self.backend.get_player_by_name(winner.name, winner.type)[0][0]
-            self.backend.set_awards(year, id, winners_awards_dict[winner])
+
+            id = -1
+            award = winners_awards_dict[winner]
+            award_id = AWARDS[award.upper().strip()]
+
+            self.backend.set_awards(year, id, award, award_id)
 
     def reset_season(self):
         self.backend.clear_team()

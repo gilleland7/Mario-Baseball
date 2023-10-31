@@ -70,6 +70,36 @@ def get_prev_game():
         'winner':winner
     }
 
+# Route for seeing previous season data
+@app.route('/previous')
+def get_prev_season():
+    api = MiddlewareAPI()
+
+    current_season = api.get_franchise()[3]
+   
+    # year, champion, runnerUp, semiFinalsTeamOne, semiFinalsTeamTwo, currentGameNum
+    seasons_raw = api.get_seasons()
+    seasons = []
+    for season in seasons_raw:
+        if (season[0] != current_season):
+            seasons.append([season[0], season[1], season[2], season[3], season[4], []])
+
+    # name, winner, season
+    awards_raw = api.get_all_awards()
+
+    for award in awards_raw:
+        index = 0
+        while (award[2] != seasons[index][0]):
+            index = index + 1
+
+        seasons[index][5].append(award[1])
+
+    print(seasons)
+    # Returning to show in reactjs year, champion, runnerUp, semiFinalsTeamOne, semiFinalsTeamTwo, awards[name, winner]
+    return {
+        'seasons':seasons
+    }
+
 #Route for seeing teams data
 @app.route('/teams')
 def get_teams():
