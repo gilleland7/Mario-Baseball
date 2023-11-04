@@ -27,43 +27,42 @@ const PreviousSeason = ({ closeModal }) => {
 
 
         function renderContent() {                      
-                if (!isLoading) {  
-                        console.log(previousData.seasons);           
+                if (!isLoading) {            
                         return(
                                 <div className='modal'>
                                         <div className='topRow'>
                                                 <h2 className='text'>Previous Seasons</h2>
-                                                <button className = 'xButton' onClick={closeModal}>X</button>
+                                                <button className='xButton' onClick={closeModal}>X</button>
                                         </div>
-                                        <div className="StatsTableClass">
+                                        <div className="StatsTableClass Previous">
                                                 <table className="StatsTable">
                                                         <tbody>
                                                                 <tr className="StatsRow">
-                                                                <th className="StatsHeader">Year</th>
-                                                                <th className="StatsHeader">Champion</th>
-                                                                <th className="StatsHeader">Runner Up</th>
-                                                                <th className="StatsHeader">Mushroom Runner Up</th>
-                                                                <th className="StatsHeader">Flower Runner Up</th>
-                                                                <th className="StatsHeader">MVP</th>
-                                                                <th className="StatsHeader">Cy Young</th>
-                                                                <th className="StatsHeader">Silver Slugger</th>
-                                                                <th className="StatsHeader">Gold Glove</th>                          
-                                                                <th className="StatsHeader">Reliever of the Year</th>
-                                                                <th className="StatsHeader">Comeback Player of the Year</th>
+                                                                        <th className="StatsHeader PreviousHeader">Year</th>
+                                                                        <th className="StatsHeader PreviousHeader">Champion</th>
+                                                                        <th className="StatsHeader PreviousHeader">Runner Up</th>
+                                                                        <th className="StatsHeader PreviousHeader">Mushroom Runner Up</th>
+                                                                        <th className="StatsHeader PreviousHeader">Flower Runner Up</th>
+                                                                        <th className="StatsHeader PreviousHeader">MVP</th>
+                                                                        <th className="StatsHeader PreviousHeader">Cy Young</th>
+                                                                        <th className="StatsHeader PreviousHeader">Silver Slugger</th>
+                                                                        <th className="StatsHeader PreviousHeader">Gold Glove</th>                          
+                                                                        <th className="StatsHeader PreviousHeader">Reliever of the Year</th>
+                                                                        <th className="StatsHeader PreviousHeader">Comeback Player of the Year</th>
                                                                 </tr>
-                                                                {previousData.seasons.map((year, index) => (
+                                                                {previousData.seasons.map((season, index) => (
                                                                 <tr key={index} className="StatsRow stat-tr-group">
-                                                                        <td className="StatsData">{year}</td>
-                                                                        <td className="StatsData">{previousData.seasons[1]}</td>
-                                                                        <td className="StatsData">{previousData.seasons[2]}</td>
-                                                                        <td className="StatsData">{previousData.seasons[3]}</td>
-                                                                        <td className="StatsData">{previousData.seasons[4]}</td>
-                                                                        <td className="StatsData">{previousData.seasons[5][0]}</td>
-                                                                        <td className="StatsData">{previousData.seasons[5][1]}</td>
-                                                                        <td className="StatsData">{previousData.seasons[5][2]}</td>
-                                                                        <td className="StatsData">{previousData.seasons[5][3]}</td>
-                                                                        <td className="StatsData">{previousData.seasons[5][4]}</td>
-                                                                        <td className="StatsData">{previousData.seasons[5][5]}</td>
+                                                                        <td className="StatsData">{season[0]}</td>
+                                                                        <td className="StatsData">{season[1]}</td>
+                                                                        <td className="StatsData">{season[2]}</td>
+                                                                        <td className="StatsData">{season[3]}</td>
+                                                                        <td className="StatsData">{season[4]}</td>
+                                                                        <td className="StatsData">{season[5][0]}</td>
+                                                                        <td className="StatsData">{season[5][1]}</td>
+                                                                        <td className="StatsData">{season[5][2]}</td>
+                                                                        <td className="StatsData">{season[5][3]}</td>
+                                                                        <td className="StatsData">{season[5][4]}</td>
+                                                                        <td className="StatsData">{season[5][5]}</td>
                                                                 </tr>
                                                                 ))}
                                                         </tbody>

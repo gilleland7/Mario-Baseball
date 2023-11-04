@@ -94,7 +94,6 @@ def get_prev_season():
 
         seasons[index][5].append(award[1])
 
-    print(seasons)
     # Returning to show in reactjs year, champion, runnerUp, semiFinalsTeamOne, semiFinalsTeamTwo, awards[name, winner]
     return {
         'seasons':seasons

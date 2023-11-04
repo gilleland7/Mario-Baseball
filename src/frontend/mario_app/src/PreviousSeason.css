@@ -30,3 +30,11 @@
     height : 50px;
     color: white;
 }
+
+.Previous {
+    align-items: start; 
+}
+
+.PreviousHeader{
+    background-color: #4472C4;
+}
