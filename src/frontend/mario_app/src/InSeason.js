@@ -5,6 +5,7 @@ import DefensiveStatsTable from './Table/DefensiveStatsTable';
 import PitchingStatsTable from './Table/PitchingStatsTable';
 import StandingsTable from './Table/StandingsTable';
 import PreviousSeason from './PreviousSeason';
+import PlayGame from './PlayGame';
 
 let year = 2023;
 let version = "v1.0";
@@ -17,6 +18,7 @@ function InSeason({yearDB, versionDB}) {
     }
 
     const [previousSeason, setpreviousseason] = useState(false);
+    const [playGame, setplaygame] = useState(false);
     
     const [userTeamData, setuserteamdata] = useState({
         teamLogo: null,
@@ -156,9 +158,13 @@ function InSeason({yearDB, versionDB}) {
         setstatsdata({statsIndex: stats});
     }
 
-    const closeModal = () => {
+    const closePreviousSeasonModal = () => {
         setpreviousseason(false);
       };
+
+    const closePlayGameModal = () => {
+        setplaygame(false);
+    };
 
     const renderTable = () => {
         if (statsData.statsIndex === 0) {
@@ -235,7 +241,7 @@ function InSeason({yearDB, versionDB}) {
                 </nav>
                 <div className="container">
                         <div className="firstHalf">
-                            <div className="text-big playGame">
+                            <div className="text-big playGame" onClick={() => setplaygame(true)}>
                                 Play Game @ Bowser
                             </div>
                             <div className="text-small">
@@ -296,7 +302,8 @@ function InSeason({yearDB, versionDB}) {
                             </div>
                         </div>
                 </div>
-                {previousSeason && <PreviousSeason closeModal={closeModal} />}               
+                {previousSeason && <PreviousSeason closeModal={closePreviousSeasonModal} />}      
+                {playGame && <PlayGame closeModal={closePlayGameModal} />}            
             </div>
         );
     }
