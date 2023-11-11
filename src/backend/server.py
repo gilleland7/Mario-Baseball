@@ -301,7 +301,23 @@ def get_teams():
         'teamIndex':teamIndex
     }
 
-# Route for seeing state data
+# Route for seeing next game data
+@app.route('/nextgame')
+def get_next_game():
+    api = MiddlewareAPI()
+
+    # returns id, gameNum, stadium ID, homeTeam name, awayTeam name, homeScore, awayScore
+    game = api.get_next_game()
+    
+    return {
+        'id':game[0],
+        'gameNum':game[1],
+        'stadium':game[2],
+        'homeTeam':game[3],
+        'awayTeam':game[4]
+    }
+
+# Route for seeing division data
 @app.route('/divisions')
 def get_divisions():
     api = MiddlewareAPI()

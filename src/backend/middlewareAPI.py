@@ -87,9 +87,9 @@ class MiddlewareAPI():
         year = results
 
         results = self.backend.get_season(year)     
-        current_game = results[0][5]
+        current_game = results[0][5]    
 
-        results = self.backend.get_next_game(current_game, user_team)
+        results = self.backend.get_next_game(current_game, user_team[0])
         return results[0]
     
     # returns year

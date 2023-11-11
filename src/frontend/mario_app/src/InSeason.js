@@ -25,6 +25,14 @@ function InSeason({yearDB, versionDB}) {
         teamName: null
     });
 
+    const [nextGame, setnextgamedata] = useState({
+        id: null,
+        gameNum: null,
+        stadium: null,
+        homeTeam: null,
+        awayTeam: null
+    });
+
     const [previousGameData, setpreviousgame] = useState({
         home: null,
         away: null,
@@ -79,6 +87,8 @@ function InSeason({yearDB, versionDB}) {
     let previousHome = '';
     let previousAway = '';
 
+    let nextOpponent = 'Next Game ';
+
     let isTopTextBold = false;
     let isBottomTextBold = false;
 
@@ -130,8 +140,22 @@ function InSeason({yearDB, versionDB}) {
                 });               
             })
         );
+
+        const fetchNextGame = fetch("/nextgame").then((res) =>
+        res.json().then((data) => {
+            // Setting a data from api
+            setnextgamedata({
+                id: data.id,
+                gameNum: data.gameNum,
+                stadium: data.stadium,
+                homeTeam: data.homeTeam,
+                awayTeam: data.awayTeam
+            });               
+        })
+    );
+
         // Use Promise.all to wait for all fetch requests to complete
-        Promise.all([fetchUser, fetchTeams, fetchDivision, fetchPrevious])
+        Promise.all([fetchUser, fetchTeams, fetchDivision, fetchPrevious, fetchNextGame])
         .then(() => {
           setIsLoading(false);
         })
@@ -228,6 +252,12 @@ function InSeason({yearDB, versionDB}) {
                 isTopTextBold = true;
                 isBottomTextBold = false;
             }
+
+            if (nextGame.awayTeam === userTeamData.teamName){
+                nextOpponent = nextOpponent + '@ ' + nextGame.homeTeam;
+            } else {
+                nextOpponent = nextOpponent + nextGame.awayTeam;
+            }
         }
         
         return(
@@ -242,7 +272,7 @@ function InSeason({yearDB, versionDB}) {
                 <div className="container">
                         <div className="firstHalf">
                             <div className="text-big playGame" onClick={() => setplaygame(true)}>
-                                Play Game @ Bowser
+                                {nextOpponent}
                             </div>
                             <div className="text-small">
                                 Last Game: <br/>
