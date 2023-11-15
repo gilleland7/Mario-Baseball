@@ -234,7 +234,6 @@ function InSeason({yearDB, versionDB}) {
             }
 
             playerIndex = 0;
-            console.log(teamsData.playerValues);
 
             divisions = divisionData.divisions;
             divisionOneData = divisionData.divisionOne;
@@ -333,7 +332,7 @@ function InSeason({yearDB, versionDB}) {
                         </div>
                 </div>
                 {previousSeason && <PreviousSeason closeModal={closePreviousSeasonModal} />}      
-                {playGame && <PlayGame closeModal={closePlayGameModal} />}            
+                {playGame && <PlayGame closeModal={closePlayGameModal} awayTeam={nextGame.awayTeam} homeTeam={nextGame.homeTeam} />}            
             </div>
         );
     }
